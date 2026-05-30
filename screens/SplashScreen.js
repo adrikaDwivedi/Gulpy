@@ -14,6 +14,7 @@ runOnJS,
 } from 'react-native-reanimated'
 import WaterBottle from '../components/WaterBottle'
 import AnimatedDrop from '../components/AnimatedDrop'
+import ProgressPill from '../components/ProgressPill'
 
 const SplashScreen = ({navigation}) => {
 
@@ -36,9 +37,7 @@ const SplashScreen = ({navigation}) => {
       <View>
       <WaterBottle />
       </View>
-      <View style={styles.coverBox}> 
-        <Text style={styles.t1}>Filling up...72% done</Text>
-        </View>
+      <ProgressPill />
         <View style={{marginTop:40}}>
         <Text style={{
           color:"#fff" , 
@@ -99,20 +98,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 40,
    },
-   coverBox:{
-    width: 170,
-    height:35,
-    backgroundColor: 'rgba(0,180,255,0.15)',
-    borderRadius: 999,
-    marginTop: 20,
-   },
-    t1: {
-      color: "#00cfff",
-      fontSize: 16,
-      fontFamily: 'DM Sans-Regular',  
-      marginTop:6,
-      alignSelf: 'center',
-    },
+
     btn:{
       width: 300,
       height:80,

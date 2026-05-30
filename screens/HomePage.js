@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Animated from 'react-native-reanimated'
+import Animated , {useSharedValue, useAnimatedStyle, withTiming} from 'react-native-reanimated'
 
 const HomePage = () => {
+ 
 return (
-<View>
-  <Text>Home Page</Text>
-</View>
+<Animated.View style={{
+  width,
+  height: 200,
+  backgroundColor: 'blue',
+}}>
+
+</Animated.View>
   );
 }
 

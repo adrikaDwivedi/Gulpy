@@ -1,11 +1,102 @@
 import { StyleSheet, Text, View, Image} from 'react-native'
+import {useEffect} from 'react'
+import Animated , {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withRepeat,
+} from 'react-native-reanimated'
 
 const WaterBottle = () => {
+
+  const scale = useSharedValue(3);
+  const opacity = useSharedValue(0);
+  const ring = useSharedValue(1);
+  const ring2 = useSharedValue(1);
+
+  useEffect (( ) =>{
+    scale.value = withTiming(1,{
+      duration: 5000,
+    });
+    opacity.value = withTiming(1,{
+      duration: 5000,
+    });
+    ring.value = withRepeat(
+      withTiming(2, {
+        duration:2500,
+      }),
+      -1,
+      false
+    );
+
+    setTimeout(() => {
+      ring2.value = withRepeat(
+        withTiming(2, {
+          duration: 2500,
+        }),
+        -1,
+        false
+        );
+    } , 1200)
+  } , [])
+
+  const ringStyle = useAnimatedStyle(() =>{
+    return {
+      opacity: 2-ring.value,
+      transform:[
+        {
+          scale: ring.value,
+        },
+      ],
+    };
+  });
+  const bottleStyle = useAnimatedStyle(() =>{
+    return {
+      opacity: opacity.value,
+      transform:[
+        {
+          scale:scale.value,
+        },
+        // {
+        //   rotate: `${rotation.value}deg`,
+        // }
+      ],
+  };
+  });
+
+  const ringStyle2 = useAnimatedStyle(() =>{
+    return {
+      opacity: 2 - ring2.value,
+      transform:[
+        {
+          scale: ring2.value,
+        }
+      ]
+    }
+  })
+
+
+
   return (
     <View style={styles.container}>
-        <View style={[styles.rings , styles.ring1]}/>
+       <Animated.View
+       style={[styles.rings,
+        styles.ring1,
+        ringStyle]}/>
+
+        <Animated.View
+       style={[
+        styles.rings ,
+         styles.ring2 , 
+         ringStyle2]}/>
+
+       
         <View style={[styles.rings , styles.ring2]}/>
-      <Image source={require('../assets//bottle_transparent.png')} style={styles.bottleImg} />
+      {/* <Image source={require('../assets//bottle_transparent.png')} style={styles.bottleImg} /> */}
+      <Animated.Image 
+      source={require('../assets//bottle_transparent.png')}
+      style={[styles.bottleImg , bottleStyle]}
+      />
     </View>
   )
 }
