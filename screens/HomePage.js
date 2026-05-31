@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import {SafeAreaView} from 'react-native-safe-area-context'
-
+import GoalCard from '../components//GoalCard'
 const HomePage = () => {
   
   const newDate = new Date();
@@ -12,7 +12,7 @@ return (
      <Text style={styles.hydrationText}>Today's Hydration</Text>
     </View>
     <View style={styles.contentContainer}>
-
+      <GoalCard />
     </View>
  </SafeAreaView>
   );
