@@ -17,7 +17,7 @@ const AppNavigator = () => {
             headerShown: false,
         }}
         >
-            <Stack.Screen name="SplashScreen" component={SplashScreen} />
+            {/* <Stack.Screen name="SplashScreen" component={SplashScreen} /> */}
             <Stack.Screen name="HomePage" component={HomePage} />
         </Stack.Navigator>
      </NavigationContainer>

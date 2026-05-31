@@ -19,6 +19,7 @@ import ProgressPill from '../components/ProgressPill'
 import Tagline from '../components/Tagline'
 import ButtonComponent from '../components/ButtonComponent'
 
+
 const SplashScreen = ({navigation}) => {
 
   return (
@@ -42,7 +43,7 @@ const SplashScreen = ({navigation}) => {
       </View>
       <ProgressPill />
       <Tagline />
-      <ButtonComponent />
+      <ButtonComponent onPress={() => navigation.navigate("HomePage")} />
     </SafeAreaView>
   )
   

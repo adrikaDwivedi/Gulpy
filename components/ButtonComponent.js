@@ -9,7 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useEffect } from "react";
 
-const ButtonComponent = () => {
+const ButtonComponent = ({onPress}) => {
   const buttonScale = useSharedValue(0);
   const buttonOpacity = useSharedValue(0);
 
@@ -47,7 +47,7 @@ buttonScale.value = withRepeat(
     <Animated.View style={buttonStyle}>
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => navigation.navigate("HomePage")}
+        onPress={onPress}
       >
         <Text style={styles.btnText}>Get started</Text>
       </TouchableOpacity>
