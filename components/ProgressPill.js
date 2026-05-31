@@ -26,7 +26,7 @@ const ProgressPill = () => {
         });
 
         progressValue.value = withTiming(72 , {
-            duration:2500,
+            duration:6000,
         });
         
     } , []);
@@ -60,7 +60,7 @@ export default ProgressPill
 
 const styles = StyleSheet.create({
        coverBox:{
-    width: 170,
+    width: 190,
     height:35,
     backgroundColor: 'rgba(0,180,255,0.15)',
     borderRadius: 999,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     t1: {
       color: "#00cfff",
       fontSize: 16,
-      fontFamily: 'DM Sans-Regular',  
+      fontFamily: 'Sora-Regular',  
       marginTop:6,
       alignSelf: 'center',
     },
