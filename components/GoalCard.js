@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     padding:18,
     flexDirection: 'row',
     marginTop: 25,
-    width: 400,
+    width: 390,
+    alignSelf: 'center',
   },
   left:{
     flex:1,
@@ -97,18 +98,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 30,
   },
-    progressbg: {
-    height: 12,
-    borderRadius: 12,
-    backgroundColor: "#23406E",
-    overflow: "hidden",
-  },
-    progressFill: {
-    width: "74%",
-    height: "100%",
-    backgroundColor: "#18C9FF",
-    borderRadius: 12,
-  },
+  //   progressbg: {
+  //   height: 12,
+  //   borderRadius: 12,
+  //   backgroundColor: "#23406E",
+  //   overflow: "hidden",
+  // },
+  //   progressFill: {
+  //   width: "74%",
+  //   height: "100%",
+  //   backgroundColor: "#18C9FF",
+  //   borderRadius: 12,
+  // },
     goalFooter: {
     marginTop:0,
     color: "#8FB8FF",

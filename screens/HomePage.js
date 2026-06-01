@@ -2,6 +2,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import GoalCard from '../components//GoalCard'
+import QuickAdds from '../components//QuickAdds'
+
+
 const HomePage = () => {
   
   const newDate = new Date();
@@ -13,6 +16,7 @@ return (
     </View>
     <View style={styles.contentContainer}>
       <GoalCard />
+      <QuickAdds/>
     </View>
  </SafeAreaView>
   );
@@ -27,6 +31,7 @@ const styles = StyleSheet.create({
   },
   headingContainer:{
     marginTop:20,
+    marginLeft: 20,
   },
   dateText:{
     color:'#6b9acf',
