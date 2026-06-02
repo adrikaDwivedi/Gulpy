@@ -5,12 +5,44 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React , { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoalCard from "../components//GoalCard";
 import QuickAddSection from "../components//QuickAddSection";
 
+
+
 const HomePage = () => {
+      const DAILY_GOAL = 2500;
+    const [waterConsumed , setWaterConsumed] = useState(1850);
+    const [customAmount , setCustomAmount] = useState('');
+
+    const progress = 
+    Math.min(
+      (waterConsumed / DAILY_GOAL) * 100,
+      100
+    );
+
+    const remaining = 
+    Math.max(
+      DAILY_GOAL - waterConsumed,
+      0
+    );
+
+    const addWater = amount =>{
+      setWaterConsumed(prev => 
+        Math.min(prev + amount, DAILY_GOAL));
+    }
+
+    const handleCustomAdd = () =>{
+      const amount = Number(customAmount);
+
+      if(!amount || amount <= 0){
+        return;
+      }
+      addWater(amount);
+      setCustomAmount('');
+    }
   const newDate = new Date();
   return (
     <SafeAreaView style={styles.container}>
@@ -19,8 +51,14 @@ const HomePage = () => {
         <Text style={styles.hydrationText}>Today's Hydration</Text>
       </View>
       <View style={styles.contentContainer}>
-        <GoalCard />
-        <QuickAddSection />
+        <GoalCard 
+        progress={progress}
+        currentWater={waterConsumed}
+        remaining={remaining}
+        />
+        <QuickAddSection
+        onAddWater={addWater}
+        />
 
         {/* custom-input-section */}
 
@@ -33,9 +71,12 @@ const HomePage = () => {
               placeholder="Custom amount (ml)..."
               placeholderTextColor="#6b9acf"
               keyboardType="numeric"
+              value = {customAmount}
+              onChangeText={setCustomAmount}
             />
 
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton} 
+            onPress={handleCustomAdd}>
               <Text style={styles.plus}>+</Text>
             </TouchableOpacity>
           </View>

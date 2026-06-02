@@ -3,7 +3,7 @@ import React , {useState} from 'react'
 import QuickAdds from './QuickAdds'
 
 
-const QuickAddSection = () => {
+const QuickAddSection = ({onAddWater}) => {
 
     const [selectedAmount , setSelectedAmount] = useState();
 
@@ -41,9 +41,12 @@ const QuickAddSection = () => {
                 amount={item.amount}
                 icon={item.icon}
                 selected={
-                    selectedAmount === item.amount
+                selectedAmount === item.amount
                 }
-                onPress={() => {setSelectedAmount(item.amount)}}
+                onPress={() => {setSelectedAmount(item.amount);
+                onAddWater(item.amount);
+                }}
+                
                 />
             ))}
           </View>

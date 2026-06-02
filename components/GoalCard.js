@@ -2,18 +2,18 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import CircularProgress from './CircularProgress'
 
-const GoalCard = () => {
+const GoalCard = ({progress , currentWater, remaining}) => {
   return (
     <View style={styles.card}>
       
       <View style={styles.left}>
-     <CircularProgress progress={74} />
+     <CircularProgress progress={progress} />
       </View>
 
 
       <View style={styles.right}>
       <Text style={styles.remaining}>Remaining</Text>  
-      <Text style={styles.remAmount}>650
+      <Text style={styles.remAmount}>{remaining}
         <Text style={styles.ml}>ml</Text>
       </Text>
       
@@ -26,6 +26,7 @@ const GoalCard = () => {
       </View> */}
 
       <Text style={styles.goalFooter}> Goal: 2500ml / day</Text>
+      
       </View>
 
     </View>
