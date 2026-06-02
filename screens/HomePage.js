@@ -4,15 +4,21 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  FlatList,
+  ScrollView,
 } from "react-native";
 import React , { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoalCard from "../components//GoalCard";
 import QuickAddSection from "../components//QuickAddSection";
+import CustomLogs from "../components/CustomLogs";
+
 
 
 
 const HomePage = () => {
+    const [logs , setLogs] = useState([]);
+
       const DAILY_GOAL = 2500;
     const [waterConsumed , setWaterConsumed] = useState(1850);
     const [customAmount , setCustomAmount] = useState('');
@@ -29,10 +35,23 @@ const HomePage = () => {
       0
     );
 
-    const addWater = amount =>{
-      setWaterConsumed(prev => 
-        Math.min(prev + amount, DAILY_GOAL));
-    }
+   const addWater = amount => {
+  setWaterConsumed(prev =>
+    Math.min(prev + amount, DAILY_GOAL)
+  );
+
+  const newLog = {
+    id: Date.now().toString(),
+    amount,
+    time: new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
+    type: 'Water',
+  };
+
+  setLogs(prev => [newLog, ...prev]);
+};
 
     const handleCustomAdd = () =>{
       const amount = Number(customAmount);
@@ -46,6 +65,9 @@ const HomePage = () => {
   const newDate = new Date();
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView
+      showsVerticalScrollIndicator={false}
+      >
       <View style={styles.headingContainer}>
         <Text style={styles.dateText}>{newDate.toString().slice(0, 16)}</Text>
         <Text style={styles.hydrationText}>Today's Hydration</Text>
@@ -81,7 +103,31 @@ const HomePage = () => {
             </TouchableOpacity>
           </View>
         </View>
+
+      {/* custom logs */}
+      <View style={styles.logsContainer}>
+  <View style={styles.logsHeader}>
+    <Text style={styles.logsTitle}>
+      Today's Log
+    </Text>
+
+    <Text style={styles.seeAll}>
+      See All
+    </Text>
+  </View>
+
+  <FlatList
+    data={logs}
+    keyExtractor={item => item.id}
+    renderItem={({ item }) => (
+      <CustomLogs item={item} />
+    )}
+    scrollEnabled={true}
+  />
+</View>
+
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -145,4 +191,26 @@ const styles = StyleSheet.create({
     color: "#0A1628",
     marginTop: -2,
   },
+  logsContainer: {
+  marginTop: 25,
+  paddingHorizontal: 20,
+},
+
+logsHeader: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 15,
+},
+
+logsTitle: {
+  color: '#fff',
+  fontSize: 24,
+  fontFamily: 'Sora-ExtraBold',
+},
+
+seeAll: {
+  color: '#18C9FF',
+  fontSize: 15,
+},
 });
