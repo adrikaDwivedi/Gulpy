@@ -43,7 +43,7 @@ const SplashScreen = ({navigation}) => {
       </View>
       <ProgressPill />
       <Tagline />
-      <ButtonComponent onPress={() => navigation.navigate("HomePage")} />
+      <ButtonComponent onPress={() => navigation.navigate("FirstUser")} />
     </SafeAreaView>
   )
   
