@@ -7,6 +7,8 @@ import {
 } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import PresetCard from "../components/PresetCard";
+
 
 const FirstUser = ({ navigation }) => {
   const newDate = new Date();
@@ -36,7 +38,10 @@ const FirstUser = ({ navigation }) => {
              fontFamily: 'SpaceGrotesk-Bold',
              
              }}>Set your daily goal</Text>
+             <Text style={{marginTop:10, marginLeft:25, fontSize: 18, color: "#fff"}}>Drag the dial to pick the preset. You can always change this later.</Text>
         </View>
+
+        <PresetCard />
       </View>
     </SafeAreaView>
   );
