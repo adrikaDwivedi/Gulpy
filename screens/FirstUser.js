@@ -9,7 +9,6 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import PresetCard from "../components/PresetCard";
 
-
 const FirstUser = ({ navigation }) => {
   const newDate = new Date();
   const hours = newDate.getHours();
@@ -25,20 +24,13 @@ const FirstUser = ({ navigation }) => {
           >
             <Ionicons name="arrow-back" size={25} color="#4dc1f7" />
           </TouchableOpacity>
-          <Text style={styles.headerText}>
-            Hello Pineapple, it's {hours} {hours < 12 ? "am" : "pm"} Let's start
-            hydrating
-          </Text>
+          <Text style={styles.headerText}>Set your daily goal</Text>
         </View>
-        
-        <View>
-          <Text style={{marginTop:20, marginLeft:25,
-             fontSize: 32, 
-             color: "#fff",
-             fontFamily: 'SpaceGrotesk-Bold',
-             
-             }}>Set your daily goal</Text>
-             <Text style={{marginTop:10, marginLeft:25, fontSize: 18, color: "#fff"}}>Drag the dial to pick the preset. You can always change this later.</Text>
+
+        <View style={styles.subtitleWrapper}>
+          <Text style={styles.subtitleText}>
+            Drag the dial to pick the preset. You can always change this later.
+          </Text>
         </View>
 
         <PresetCard />
@@ -63,10 +55,19 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: "#fff",
-    fontSize: 18,
-    fontFamily: "Sora-Regular",
+    fontSize: 28,
+    fontFamily: "SpaceGrotesk-Regular",
     flex: 1,
     flexWrap: "wrap",
+  },
+  subtitleWrapper: {
+    marginTop: 10,
+    marginLeft: 25,
+    marginRight: 25,
+  },
+  subtitleText: {
+    fontSize: 18,
+    color: "#fff",
   },
   backBtn: {
     width: 40,
