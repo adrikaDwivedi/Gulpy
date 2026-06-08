@@ -115,34 +115,6 @@ const PresetCard = () => {
   const minWaterY = NECK_H + 10;
   const waterTop = maxWaterY - (maxWaterY - minWaterY) * waterFillRatio;
 
-  const[remindersEnabled, setRemindersEnabled] = useState(true);
-
-  const reminderTimes = [
-  '7:00 AM',
-  '10:00 AM',
-  '1:00 PM',
-  '4:00 PM',
-  '7:00 PM',
-  '9:00 PM',
-];
-
-const [selectedTimes, setSelectedTimes] =
-  useState([
-    '7:00 AM',
-    '10:00 AM',
-    '4:00 PM',
-    '9:00 PM',
-  ]);
-
-  const toggleReminder = (time) => {
-  if (selectedTimes.includes(time)) {
-    setSelectedTimes(
-      selectedTimes.filter(t => t !== time)
-    );
-  } else {
-    setSelectedTimes([...selectedTimes, time]);
-  }
-};
 
   return (
     <>
@@ -319,8 +291,8 @@ const [selectedTimes, setSelectedTimes] =
         <View style={styles.divider} />
 
         {/* Quick Presets — pill chips only */}
-        <Text style={styles.sectionLabel}>QUICK PRESETS</Text>
-        <View style={styles.chipRow}>
+        {/* <Text style={styles.sectionLabel}>QUICK PRESETS</Text> */}
+        {/* <View style={styles.chipRow}>
           {PRESET_META.map((item) => {
             const isActive = goal === item.value;
             return (
@@ -342,56 +314,7 @@ const [selectedTimes, setSelectedTimes] =
               </TouchableOpacity>
             );
           })}
-        </View>
-      </View>
-
-      <View style={styles.reminderSection}>
-        <View style={styles.reminderHeader}>
-          <View>
-            <Text style={styles.reminderTitle}>Drink reminders</Text>
-
-            <Text style={styles.reminderSubtitle}>
-              Tap to toggle for reminders to on or off
-            </Text>
-          </View>
-            <Switch
-    value={remindersEnabled}
-    onValueChange={setRemindersEnabled}
-    trackColor={{
-      false: '#1A3157',
-      true: '#2E90FA',
-    }}
-  />
-        </View>
-
-        <View style={styles.endSection}>
-          <View style={styles.chipsContainer}>
-  {reminderTimes.map((time) => {
-    const active = selectedTimes.includes(time);
-
-    return (
-      <TouchableOpacity
-        key={time}
-        onPress={() => toggleReminder(time)}
-        style={[
-          styles.chip,
-          active && styles.activeChip,
-        ]}
-      >
-        <Text
-          style={[
-            styles.chipText,
-            active && styles.activeChipText,
-          ]}
-        >
-          {active ? '🔔 ' : ''}
-          {time}
-        </Text>
-      </TouchableOpacity>
-    );
-  })}
-</View>
-        </View>
+        </View> */}
       </View>
     </>
   );
@@ -486,6 +409,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     letterSpacing: -2,
     lineHeight: 66,
+    fontFamily: 'SpaceGrotesk-Bold',
   },
   goalUnit: {
     fontSize: 13,
@@ -493,6 +417,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.4,
     marginTop: 2,
+    fontFamily: 'DMSans-Regular',
   },
   fillBarWrapper: { width: "100%", paddingHorizontal: 2 },
   fillBarLabel: {
@@ -500,7 +425,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 5,
   },
-  fillBarText: { color: "#4A7AB5", fontSize: 11, fontWeight: "600" },
+  fillBarText: { color: "#4A7AB5", fontSize: 11, fontWeight: "600", fontFamily: 'DMSans-Regular'},
   fillBarPct: { color: "#21C8FF", fontSize: 11, fontWeight: "700" },
   fillBarTrack: {
     height: 4,
@@ -532,6 +457,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.4,
     marginTop: 1,
+    fontFamily: 'DMSans-Regular',
   },
   scrollFadeTop: {
     position: "absolute",
@@ -591,57 +517,5 @@ const styles = StyleSheet.create({
   // reminderSection:{
   //   marginTop:20,
   // },
-  reminderHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-  reminderTitle: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#FFF",
-  },
-
-  reminderSubtitle: {
-    color: "#7EA6D9",
-    marginTop: 8,
-    fontSize: 15,
-    maxWidth: "85%",
-  },
-  chipsContainer: {
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  gap: 12,
-  marginTop: 20,
-},
-
-chip: {
-  paddingHorizontal: 18,
-  height: 48,
-
-  borderRadius: 24,
-
-  backgroundColor: '#102A52',
-
-  justifyContent: 'center',
-  alignItems: 'center',
-
-  borderWidth: 1,
-  borderColor: '#183E72',
-},
-
-activeChip: {
-  borderColor: '#1DA1F2',
-  backgroundColor: '#113A6C',
-},
-
-chipText: {
-  color: '#6F94C4',
-  fontWeight: '600',
-  fontSize: 18,
-},
-
-activeChipText: {
-  color: '#9FD3FF',
-},
+  
 });

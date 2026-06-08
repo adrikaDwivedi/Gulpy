@@ -5,32 +5,48 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
   withSequence,
-    withRepeat,
+  withRepeat,
 } from "react-native-reanimated";
 import { useEffect } from "react";
 
-const ButtonComponent = ({onPress}) => {
-  const buttonScale = useSharedValue(0);
+const ButtonComponent = ({
+  onPress,
+  label = "Get started",
+  animated = true,
+  textStyle,
+}) => {
+  if (!animated) {
+    return (
+      <View>
+        <TouchableOpacity style={styles.btn} onPress={onPress}>
+          <Text style={[styles.btnText, textStyle]}>{label}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const buttonScale = useSharedValue(1);
   const buttonOpacity = useSharedValue(0);
 
   useEffect(() => {
-    setTimeout(() => {
+    const t = setTimeout(() => {
       buttonOpacity.value = withTiming(1, {
         duration: 400,
       });
-buttonScale.value = withRepeat(
-  withSequence(
-    withTiming(1.03, {
-      duration: 1200,
-    }),
-    withTiming(1, {
-      duration: 1200,
-    })
-  ),
-  -1,
-  true
-);
+      buttonScale.value = withRepeat(
+        withSequence(
+          withTiming(1.03, {
+            duration: 1200,
+          }),
+          withTiming(1, {
+            duration: 1200,
+          }),
+        ),
+        -1,
+        true,
+      );
     }, 3000);
+    return () => clearTimeout(t);
   }, []);
 
   const buttonStyle = useAnimatedStyle(() => {
@@ -43,13 +59,14 @@ buttonScale.value = withRepeat(
       ],
     };
   });
+
   return (
     <Animated.View style={buttonStyle}>
-      <TouchableOpacity
-        style={styles.btn}
-        onPress={onPress}
-      >
-        <Text style={styles.btnText}>Get started</Text>
+      <TouchableOpacity style={styles.btn} onPress={onPress}>
+        {
+          // merge styles and ensure textStyle.fontFamily takes precedence
+        }
+        <Text style={[styles.btnText, textStyle ?? {}]}>{label}</Text>
       </TouchableOpacity>
     </Animated.View>
   );
@@ -70,7 +87,6 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 22,
     fontWeight: "800",
-    fontFamily: "Sora-ExtraBold",
     alignSelf: "center",
     marginTop: 15,
   },

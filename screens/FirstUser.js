@@ -4,10 +4,13 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  Switch,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import PresetCard from "../components/PresetCard";
+import Reminder from "../components/Reminder";
+import ButtonComponent from "../components/ButtonComponent";
 
 const FirstUser = ({ navigation }) => {
   const newDate = new Date();
@@ -34,6 +37,16 @@ const FirstUser = ({ navigation }) => {
         </View>
 
         <PresetCard />
+
+        <Reminder />
+
+        <View style={styles.buttonWrapper}>
+          <ButtonComponent
+            label="Lets start hydrating"
+            animated={false}
+            textStyle={{ fontFamily: "SpaceGrotesk-Regular" }}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -55,7 +68,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: "#fff",
-    fontSize: 28,
+    fontSize: 32,
     fontFamily: "SpaceGrotesk-Regular",
     flex: 1,
     flexWrap: "wrap",
@@ -66,8 +79,9 @@ const styles = StyleSheet.create({
     marginRight: 25,
   },
   subtitleText: {
-    fontSize: 18,
+    fontSize: 15,
     color: "#fff",
+    fontFamily: "DMSans-Regular",
   },
   backBtn: {
     width: 40,
@@ -78,5 +92,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     marginRight: 14,
+  },
+  buttonWrapper: {
+    alignItems: "center",
+    marginTop: -35,
+    marginHorizontal: 25,
+    marginBottom: 20,
   },
 });
