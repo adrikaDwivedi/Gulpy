@@ -76,18 +76,17 @@ export default ButtonComponent;
 
 const styles = StyleSheet.create({
   btn: {
-    width: 300,
-    height: 80,
+    width: 280,
+    height: 70,
     backgroundColor: "#00cfff",
     paddingHorizontal: 30,
     paddingVertical: 10,
     borderRadius: 999,
-    marginTop: 40,
+    marginTop: 20,
   },
   btnText: {
     fontSize: 22,
-    fontWeight: "800",
-    alignSelf: "center",
-    marginTop: 15,
+    textAlign: "center",
+    lineHeight: 50,
   },
 });

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Switch,
+  ScrollView
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,6 +18,7 @@ const FirstUser = ({ navigation }) => {
   const hours = newDate.getHours();
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <TouchableOpacity
@@ -45,9 +47,11 @@ const FirstUser = ({ navigation }) => {
             label="Lets start hydrating"
             animated={false}
             textStyle={{ fontFamily: "SpaceGrotesk-Regular" }}
+            onPress={() => navigation.navigate('HomePage')}
           />
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -95,8 +99,7 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     alignItems: "center",
-    marginTop: -35,
     marginHorizontal: 25,
-    marginBottom: 20,
+    // marginTop: -20,
   },
 });

@@ -26,7 +26,7 @@ const Reminder = () => {
     }
   };
 
-  const [remindersEnabled, setRemindersEnabled] = useState(true);
+  const [remindersEnabled, setRemindersEnabled] = useState(false);
   return (
     <View>
       <View style={styles.reminderSection}>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "700",
     color: "#FFF",
-    fontFamily:'SpaceGrotesk-Regular',
+    fontFamily: "SpaceGrotesk-Regular",
   },
 
   reminderSubtitle: {
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 15,
     maxWidth: "85%",
-    fontFamily: 'DMSans-Regular',
+    fontFamily: "DMSans-Regular",
   },
   chipsContainer: {
     flexDirection: "row",
@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
   },
 
   chip: {
-    width: "30%",
-    paddingHorizontal: 12,
+    flexBasis: "30%",
+    paddingHorizontal: 8,
     height: 40,
     marginBottom: 12,
     borderRadius: 24,
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#183E72",
+    overflow: "hidden",
   },
 
   activeChip: {
@@ -134,10 +135,9 @@ const styles = StyleSheet.create({
   chipText: {
     color: "#6F94C4",
     fontWeight: "600",
-    fontSize: 14,
-    fontFamily: 'DMSans-Regular',
+    fontSize: 12,
+    fontFamily: "DMSans-Regular",
   },
-
   activeChipText: {
     color: "#9FD3FF",
   },

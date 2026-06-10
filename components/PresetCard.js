@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 0,
     gap: 8,
   },
   headerDot: {
@@ -350,6 +350,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "700",
     flex: 1,
+    fontFamily:'DMSans-Regular',
   },
   tagBadge: {
     backgroundColor: "rgba(33,200,255,0.12)",
@@ -381,7 +382,7 @@ const styles = StyleSheet.create({
   sections: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: 12,
     gap: 4,
   },
   leftSection: {
