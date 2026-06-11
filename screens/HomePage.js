@@ -44,9 +44,34 @@ const HomePage = () => {
         type: "Water",
       };
 
-      setLogs((prev) => [newLog, ...prev]);
+      setLogs((prev) => {
+        const updatedLogs = [newLog, ...prev];
+        saveLogs(updatedLogs);
+        return updatedLogs;
+      });
 
       console.log("Saved Intake:", updatedWater);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const saveLogs = async (logsToSave) => {
+    try {
+      await saveItem(KEYS.WATER_LOGS, logsToSave);
+      console.log("Logs saved:", logsToSave);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadLogs = async () => {
+    try {
+      const savedLogs = await getItem(KEYS.WATER_LOGS);
+      if (savedLogs) {
+        setLogs(savedLogs);
+        console.log("Loaded Logs:", savedLogs);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +117,7 @@ const HomePage = () => {
   useEffect(() => {
     loadGoal();
     loadCurrentIntake();
+    loadLogs();
   }, []);
 
   return (

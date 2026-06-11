@@ -5,78 +5,67 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Switch,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import PresetCard from "../components/PresetCard";
 import Reminder from "../components/Reminder";
 import ButtonComponent from "../components/ButtonComponent";
-import {
-  saveItem,
-  KEYS
-} from '../storage/hydrationStorage'
-
-
+import { saveItem, KEYS } from "../storage/hydrationStorage";
 
 const FirstUser = ({ navigation }) => {
-
-    const [goal, setGoal] = useState(2000);
+  const [goal, setGoal] = useState(2000);
   const newDate = new Date();
   const hours = newDate.getHours();
 
-    const handleStart = async () =>{
+  const handleStart = async () => {
     try {
-      await saveItem(
-        KEYS.DAILY_GOAL,
-        goal
-      )
-      console.log("Goal Saved: " , goal);
-    navigation.navigate('HomePage')      
+      await saveItem(KEYS.DAILY_GOAL, goal);
+      await saveItem(KEYS.CURRENT_INTAKE, 0);
+      console.log("Goal Saved: ", goal);
+      navigation.navigate("HomePage");
     } catch (error) {
       console.log(error);
-      
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <Ionicons name="arrow-back" size={25} color="#4dc1f7" />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Set your daily goal</Text>
+        <View style={styles.container}>
+          <View style={styles.headerContainer}>
+            <TouchableOpacity
+              style={styles.backBtn}
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Ionicons name="arrow-back" size={25} color="#4dc1f7" />
+            </TouchableOpacity>
+            <Text style={styles.headerText}>Set your daily goal</Text>
+          </View>
+
+          <View style={styles.subtitleWrapper}>
+            <Text style={styles.subtitleText}>
+              Drag the dial to pick the preset. You can always change this
+              later.
+            </Text>
+          </View>
+
+          <PresetCard goal={goal} setGoal={setGoal} />
+
+          <Reminder />
+
+          <View style={styles.buttonWrapper}>
+            <ButtonComponent
+              label="Lets start hydrating"
+              animated={false}
+              textStyle={{ fontFamily: "SpaceGrotesk-Regular" }}
+              onPress={handleStart}
+            />
+          </View>
         </View>
-
-        <View style={styles.subtitleWrapper}>
-          <Text style={styles.subtitleText}>
-            Drag the dial to pick the preset. You can always change this later.
-          </Text>
-        </View>
-
-        <PresetCard
-        goal={goal}
-        setGoal={setGoal}
-        />
-
-        <Reminder />
-
-        <View style={styles.buttonWrapper}>
-          <ButtonComponent
-            label="Lets start hydrating"
-            animated={false}
-            textStyle={{ fontFamily: "SpaceGrotesk-Regular" }}
-            onPress={handleStart}
-          />
-        </View>
-      </View>
       </ScrollView>
     </SafeAreaView>
   );
