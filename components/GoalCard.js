@@ -1,85 +1,85 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import CircularProgress from './CircularProgress'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import CircularProgress from "./CircularProgress";
 
-const GoalCard = ({progress , currentWater, remaining}) => {
+const GoalCard = ({ dailyGoal, progress, waterConsumed, remaining }) => {
   return (
     <View style={styles.card}>
-      
       <View style={styles.left}>
-     <CircularProgress progress={progress} />
+        <CircularProgress
+          dailyGoal={dailyGoal}
+          progress={progress}
+          waterConsumed={waterConsumed}
+        />
       </View>
 
-
       <View style={styles.right}>
-      <Text style={styles.remaining}>Remaining</Text>  
-      <Text style={styles.remAmount}>{remaining}
-        <Text style={styles.ml}>ml</Text>
-      </Text>
-      
+        <Text style={styles.remaining}>Remaining</Text>
+        <Text style={styles.remAmount}>
+          {remaining}
+          <Text style={styles.ml}>ml</Text>
+        </Text>
 
-      <Text style={styles.dailyGoal}>Daily Goal</Text>
-      
-{/* 
+        <Text style={styles.dailyGoal}>Daily Goal</Text>
+
+        {/* 
       <View style={styles.progressbg}>
         <View style={styles.progressFill}/>
       </View> */}
 
-      <Text style={styles.goalFooter}> Goal: 2500ml / day</Text>
-      
+        <Text style={styles.goalFooter}> Goal: {dailyGoal}ml today</Text>
       </View>
-
     </View>
-  )
-}
+  );
+};
 
-export default GoalCard
+export default GoalCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#102550',
+    backgroundColor: "#102550",
     borderRadius: 50,
-    padding:18,
-    flexDirection: 'row',
+    padding: 18,
+    flexDirection: "row",
     marginTop: 25,
     width: 390,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
-  left:{
-    flex:1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  left: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  right:{
-    flex:1.2,
-    justifyContent: 'center',
+  right: {
+    flex: 1.2,
+    justifyContent: "center",
     paddingLeft: 20,
   },
-  circle:{
+  circle: {
     width: 170,
     height: 170,
     borderRadius: 85,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#152E63',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#152E63",
   },
-  percent:{
-    color: '#fff',
-    fontSize:42,
+  percent: {
+    color: "#fff",
+    fontSize: 42,
     fontWeight: "700",
   },
-  current:{
-    color: '#8FB8FF',
+  current: {
+    color: "#8FB8FF",
     fontSize: 24,
-    marginTop:6,
+    marginTop: 6,
   },
- total: {
+  total: {
     color: "#7090C9",
     fontSize: 16,
     marginTop: 2,
   },
 
-    remaining: {
+  remaining: {
     color: "#8FB8FF",
     fontSize: 20,
   },
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   ml: {
     fontSize: 28,
-    color: "#a6bee8"
+    color: "#a6bee8",
   },
   dailyGoal: {
     color: "#FFFFFF",
@@ -111,12 +111,10 @@ const styles = StyleSheet.create({
   //   backgroundColor: "#18C9FF",
   //   borderRadius: 12,
   // },
-    goalFooter: {
-    marginTop:0,
+  goalFooter: {
+    marginTop: 0,
     color: "#8FB8FF",
     fontSize: 18,
     marginLeft: -8,
   },
-
-
-})
+});

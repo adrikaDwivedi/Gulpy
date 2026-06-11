@@ -7,126 +7,149 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
-import React , { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoalCard from "../components//GoalCard";
 import QuickAddSection from "../components//QuickAddSection";
 import CustomLogs from "../components/CustomLogs";
-
-
-
+import { saveItem, getItem, KEYS } from "../storage//hydrationStorage.js";
 
 const HomePage = () => {
-    const [logs , setLogs] = useState([]);
+  const [logs, setLogs] = useState([]);
+  const [dailyGoal, setDailyGoal] = useState(0);
+  const [waterConsumed, setWaterConsumed] = useState(0);
+  const [customAmount, setCustomAmount] = useState("");
 
-      const DAILY_GOAL = 2500;
-    const [waterConsumed , setWaterConsumed] = useState(1850);
-    const [customAmount , setCustomAmount] = useState('');
+  const progress = dailyGoal
+    ? Math.min((waterConsumed / dailyGoal) * 100, 100)
+    : 0;
 
-    const progress = 
-    Math.min(
-      (waterConsumed / DAILY_GOAL) * 100,
-      100
-    );
+  const remaining = Math.max(dailyGoal - waterConsumed, 0);
 
-    const remaining = 
-    Math.max(
-      DAILY_GOAL - waterConsumed,
-      0
-    );
+  const addWater = async (amount) => {
+    try {
+      const updatedWater = Math.min(waterConsumed + amount, dailyGoal);
 
-   const addWater = amount => {
-  setWaterConsumed(prev =>
-    Math.min(prev + amount, DAILY_GOAL)
-  );
+      setWaterConsumed(updatedWater);
 
-  const newLog = {
-    id: Date.now().toString(),
-    amount,
-    time: new Date().toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-    type: 'Water',
+      await saveItem(KEYS.CURRENT_INTAKE, updatedWater);
+
+      const newLog = {
+        id: Date.now().toString(),
+        amount,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        type: "Water",
+      };
+
+      setLogs((prev) => [newLog, ...prev]);
+
+      console.log("Saved Intake:", updatedWater);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  setLogs(prev => [newLog, ...prev]);
-};
+  const loadCurrentIntake = async () => {
+    try {
+      const savedIntake = await getItem(KEYS.CURRENT_INTAKE);
 
-    const handleCustomAdd = () =>{
-      const amount = Number(customAmount);
+      if (savedIntake !== null) {
+        setWaterConsumed(savedIntake);
 
-      if(!amount || amount <= 0){
-        return;
+        console.log("Loaded Intake:", savedIntake);
       }
-      addWater(amount);
-      setCustomAmount('');
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  const handleCustomAdd = () => {
+    const amount = Number(customAmount);
+
+    if (!amount || amount <= 0) {
+      return;
+    }
+    addWater(amount);
+    setCustomAmount("");
+  };
   const newDate = new Date();
+
+  const loadGoal = async () => {
+    try {
+      const savedGoal = await getItem(KEYS.DAILY_GOAL);
+      console.log("Goal Retrieved: ", savedGoal);
+      if (savedGoal) {
+        setDailyGoal(savedGoal);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadGoal();
+    loadCurrentIntake();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-      showsVerticalScrollIndicator={false}
-      >
-      <View style={styles.headingContainer}>
-        <Text style={styles.dateText}>{newDate.toString().slice(0, 16)}</Text>
-        <Text style={styles.hydrationText}>Today's Hydration</Text>
-      </View>
-      <View style={styles.contentContainer}>
-        <GoalCard 
-        progress={progress}
-        currentWater={waterConsumed}
-        remaining={remaining}
-        />
-        <QuickAddSection
-        onAddWater={addWater}
-        />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.headingContainer}>
+          <Text style={styles.dateText}>{newDate.toString().slice(0, 16)}</Text>
+          <Text style={styles.hydrationText}>Today's Hydration</Text>
+        </View>
+        <View style={styles.contentContainer}>
+          <GoalCard
+            dailyGoal={dailyGoal}
+            progress={progress}
+            waterConsumed={waterConsumed}
+            remaining={remaining}
+          />
+          <QuickAddSection onAddWater={addWater} />
 
-        {/* custom-input-section */}
+          {/* custom-input-section */}
 
-        <View>
-          <View style={styles.customInputContainer}>
-            <Text style={styles.dropIcon}>💧</Text>
+          <View>
+            <View style={styles.customInputContainer}>
+              <Text style={styles.dropIcon}>💧</Text>
 
-            <TextInput
-              style={styles.txtInput}
-              placeholder="Custom amount (ml)..."
-              placeholderTextColor="#6b9acf"
-              keyboardType="numeric"
-              value = {customAmount}
-              onChangeText={setCustomAmount}
+              <TextInput
+                style={styles.txtInput}
+                placeholder="Custom amount (ml)..."
+                placeholderTextColor="#6b9acf"
+                keyboardType="numeric"
+                value={customAmount}
+                onChangeText={setCustomAmount}
+              />
+
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={handleCustomAdd}
+              >
+                <Text style={styles.plus}>+</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* custom logs */}
+          <View style={styles.logsContainer}>
+            <View style={styles.logsHeader}>
+              <Text style={styles.logsTitle}>Today's Log</Text>
+
+              <Text style={styles.seeAll}>See All</Text>
+            </View>
+
+            <FlatList
+              data={logs}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => <CustomLogs item={item} />}
+              scrollEnabled={true}
             />
-
-            <TouchableOpacity style={styles.addButton} 
-            onPress={handleCustomAdd}>
-              <Text style={styles.plus}>+</Text>
-            </TouchableOpacity>
           </View>
         </View>
-
-      {/* custom logs */}
-      <View style={styles.logsContainer}>
-  <View style={styles.logsHeader}>
-    <Text style={styles.logsTitle}>
-      Today's Log
-    </Text>
-
-    <Text style={styles.seeAll}>
-      See All
-    </Text>
-  </View>
-
-  <FlatList
-    data={logs}
-    keyExtractor={item => item.id}
-    renderItem={({ item }) => (
-      <CustomLogs item={item} />
-    )}
-    scrollEnabled={true}
-  />
-</View>
-
-      </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -192,25 +215,22 @@ const styles = StyleSheet.create({
     marginTop: -2,
   },
   logsContainer: {
-  marginTop: 25,
-  paddingHorizontal: 20,
-},
-
-logsHeader: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: 15,
-},
-
-logsTitle: {
-  color: '#fff',
-  fontSize: 24,
-  fontFamily: 'Sora-ExtraBold',
-},
-
-seeAll: {
-  color: '#18C9FF',
-  fontSize: 15,
-},
+    marginTop: 25,
+    paddingHorizontal: 20,
+  },
+  logsHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  logsTitle: {
+    color: "#fff",
+    fontSize: 24,
+    fontFamily: "Sora-ExtraBold",
+  },
+  seeAll: {
+    color: "#18C9FF",
+    fontSize: 15,
+  },
 });

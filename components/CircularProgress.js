@@ -14,6 +14,8 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 export default function CircularProgress({
   progress = 74,
   size = 180,
+  dailyGoal,
+  waterConsumed,
 }) {
   const strokeWidth = 18;
 
@@ -83,11 +85,11 @@ export default function CircularProgress({
         </Text>
 
         <Text style={styles.amount}>
-          1850ml
+          {waterConsumed}ml
         </Text>
 
         <Text style={styles.goal}>
-          of 2500ml
+          of {dailyGoal}ml
         </Text>
       </View>
     </View>
