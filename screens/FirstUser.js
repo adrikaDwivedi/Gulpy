@@ -7,6 +7,11 @@ import {
   Switch,
   ScrollView,
 } from "react-native";
+import {
+  requestNotificationPermission,
+  scheduleDailyReminder,
+  sendTestNotification,
+} from "../services/Notifications";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import PresetCard from "../components/PresetCard";
@@ -23,8 +28,15 @@ const FirstUser = ({ navigation }) => {
     try {
       await saveItem(KEYS.DAILY_GOAL, goal);
       await saveItem(KEYS.CURRENT_INTAKE, 0);
+
+      const granted = await requestNotificationPermission();
+
+      if(granted){
+        await sendTestNotification();
+      }
       console.log("Goal Saved: ", goal);
       navigation.navigate("HomePage");
+      
     } catch (error) {
       console.log(error);
     }

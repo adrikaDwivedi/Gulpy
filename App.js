@@ -2,6 +2,17 @@ import { StyleSheet, Text, View } from "react-native";
 import AppNavigator from "./navigation//AppNavigator";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     "Sora-Regular": require("./assets/fonts/Sora-Regular.ttf"),
