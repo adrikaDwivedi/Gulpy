@@ -12,10 +12,33 @@ import { Ionicons } from "@expo/vector-icons";
 import PresetCard from "../components/PresetCard";
 import Reminder from "../components/Reminder";
 import ButtonComponent from "../components/ButtonComponent";
+import {
+  saveItem,
+  KEYS
+} from '../storage/hydrationStorage'
+
+
 
 const FirstUser = ({ navigation }) => {
+
+    const [goal, setGoal] = useState(2000);
   const newDate = new Date();
   const hours = newDate.getHours();
+
+    const handleStart = async () =>{
+    try {
+      await saveItem(
+        KEYS.DAILY_GOAL,
+        goal
+      )
+      console.log("Goal Saved: " , goal);
+    navigation.navigate('HomePage')      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -38,7 +61,10 @@ const FirstUser = ({ navigation }) => {
           </Text>
         </View>
 
-        <PresetCard />
+        <PresetCard
+        goal={goal}
+        setGoal={setGoal}
+        />
 
         <Reminder />
 
@@ -47,7 +73,7 @@ const FirstUser = ({ navigation }) => {
             label="Lets start hydrating"
             animated={false}
             textStyle={{ fontFamily: "SpaceGrotesk-Regular" }}
-            onPress={() => navigation.navigate('HomePage')}
+            onPress={handleStart}
           />
         </View>
       </View>

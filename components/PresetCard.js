@@ -17,6 +17,10 @@ import Svg, {
   Rect,
   Line,
 } from "react-native-svg";
+import {
+  saveItem,
+  KEYS,  
+} from '../storage/hydrationStorage'
 
 const ITEM_HEIGHT = 52;
 const BW = 116;
@@ -61,8 +65,10 @@ const buildBottlePath = () => {
 };
 const BOTTLE_PATH = buildBottlePath();
 
-const PresetCard = () => {
-  const [goal, setGoal] = useState(2000);
+const PresetCard = ({
+  goal,
+  setGoal
+}) => {
   const scrollRef = useRef(null);
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
@@ -106,6 +112,8 @@ const PresetCard = () => {
       setGoal(snapped);
     }
   };
+
+
 
   const activeMeta = PRESET_META.find((p) => p.value === goal);
   const fillPct = ((goal - 1000) / 7000) * 100;
