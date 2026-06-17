@@ -18,6 +18,11 @@ import PresetCard from "../components/PresetCard";
 import Reminder from "../components/Reminder";
 import ButtonComponent from "../components/ButtonComponent";
 import { saveItem, KEYS } from "../storage/hydrationStorage";
+import { wp, hp, rf } from "../utils/responsive";
+import { FontSize, FontFamily } from "../theme/typography";
+import { Spacing } from "../theme/spacing";
+import { Radius } from "../theme/radius";
+import { Shadow } from "../theme/shadow";
 
 const FirstUser = ({ navigation }) => {
   const [goal, setGoal] = useState(2000);
@@ -31,12 +36,11 @@ const FirstUser = ({ navigation }) => {
 
       const granted = await requestNotificationPermission();
 
-      if(granted){
+      if (granted) {
         await sendTestNotification();
       }
       console.log("Goal Saved: ", goal);
       navigation.navigate("HomePage");
-      
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +49,7 @@ const FirstUser = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={styles.container}>
+        <View style={styles.pageContent}>
           <View style={styles.headerContainer}>
             <TouchableOpacity
               style={styles.backBtn}
@@ -53,7 +57,7 @@ const FirstUser = ({ navigation }) => {
                 navigation.goBack();
               }}
             >
-              <Ionicons name="arrow-back" size={25} color="#4dc1f7" />
+              <Ionicons name="arrow-back" size={rf(22)} color="#4dc1f7" />
             </TouchableOpacity>
             <Text style={styles.headerText}>Set your daily goal</Text>
           </View>
@@ -71,9 +75,9 @@ const FirstUser = ({ navigation }) => {
 
           <View style={styles.buttonWrapper}>
             <ButtonComponent
-              label="Lets start hydrating"
+              label="Let's start hydrating"
               animated={false}
-              textStyle={{ fontFamily: "SpaceGrotesk-Regular" }}
+              textStyle={{ fontFamily: FontFamily.regular }}
               onPress={handleStart}
             />
           </View>
@@ -87,46 +91,47 @@ export default FirstUser;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#0a1628",
     flex: 1,
+    backgroundColor: "#0a1628",
+  },
+  pageContent: {
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xxl,
+    paddingBottom: Spacing.xl,
   },
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 80,
-    marginLeft: 25,
-    marginRight: 25,
+    marginBottom: Spacing.md,
   },
   headerText: {
     color: "#fff",
-    fontSize: 32,
-    fontFamily: "SpaceGrotesk-Regular",
+    fontSize: FontSize.xxl,
+    fontFamily: FontFamily.bold,
     flex: 1,
     flexWrap: "wrap",
   },
   subtitleWrapper: {
-    marginTop: 10,
-    marginLeft: 25,
-    marginRight: 25,
+    marginBottom: Spacing.lg,
   },
   subtitleText: {
-    fontSize: 15,
+    fontSize: FontSize.sm,
     color: "#fff",
-    fontFamily: "DMSans-Regular",
+    fontFamily: FontFamily.regular,
+    lineHeight: rf(22),
   },
   backBtn: {
-    width: 40,
-    height: 40,
+    width: wp(11),
+    height: wp(11),
     borderWidth: 1,
     borderColor: "#1E90FF",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
-    marginRight: 14,
+    borderRadius: Radius.md,
+    marginRight: Spacing.md,
   },
   buttonWrapper: {
     alignItems: "center",
-    marginHorizontal: 25,
-    // marginTop: -20,
+    marginTop: Spacing.xl,
   },
 });
