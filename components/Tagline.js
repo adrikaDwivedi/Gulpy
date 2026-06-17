@@ -8,6 +8,9 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import { useEffect } from "react";
+import { FontSize, FontFamily } from "../theme/typography";
+import { Spacing } from "../theme/spacing";
+import { rf } from "../utils/responsive";
 
 const Tagline = () => {
   const titleOpacity = useSharedValue(0);
@@ -23,27 +26,33 @@ const Tagline = () => {
     setTimeout(() => {
       titleOpacity.value = withTiming(1, {
         duration: 700,
+        easing: Easing.out(Easing.exp),
       });
       titleY.value = withTiming(0, {
         duration: 700,
+        easing: Easing.out(Easing.exp),
       });
     }, 2500);
 
     setTimeout(() => {
       subtitleOpacity.value = withTiming(1, {
         duration: 700,
+        easing: Easing.out(Easing.exp),
       });
       subtitleY.value = withTiming(0, {
         duration: 700,
+        easing: Easing.out(Easing.exp),
       });
     }, 3000);
 
     setTimeout(() => {
       taglineOpacity.value = withTiming(1, {
         duration: 700,
+        easing: Easing.out(Easing.exp),
       });
       taglineY.value = withTiming(0, {
         duration: 700,
+        easing: Easing.out(Easing.exp),
       });
     }, 3500);
   }, []);
@@ -75,51 +84,44 @@ const Tagline = () => {
     ],
   }));
   return (
-    <View style={{ marginTop: 40 }}>
-      <Animated.Text
-        style={[
-          {
-            color: "#fff",
-            fontSize: 25,
-            alignSelf: "center",
-            fontFamily: 'Sora-Bold'
-          },
-          titleStyle,
-        ]}
-      >
+    <View style={styles.container}>
+      <Animated.Text style={[styles.title, titleStyle]}>
         Stay Hydrated,
       </Animated.Text>
-      <Animated.Text
-        style={[
-          {
-            color: "#00cfff",
-            fontSize: 25,
-            alignSelf: "center",
-            fontFamily: 'Sora-Bold'
-          },
-          subtitleStyle,
-        ]}
-      >
+      <Animated.Text style={[styles.subtitle, subtitleStyle]}>
         Stay Energized!
       </Animated.Text>
-      <Animated.Text
-        style={[
-          {
-            color: "#6b9acf",
-            fontSize: 16,
-            alignSelf: "center",
-            fontFamily: 'Sora-Regular',
-            marginTop: 10,
-          },
-          taglineStyle,
-        ]}
-      >
+      <Animated.Text style={[styles.tagline, taglineStyle]}>
         Track every sip. Hit your daily goal.
       </Animated.Text>
     </View>
   );
 };
 
-export default Tagline;
+const styles = StyleSheet.create({
+  container: {
+    marginTop: Spacing.xl,
+  },
+  title: {
+    color: "#fff",
+    fontSize: FontSize.xl,
+    alignSelf: "center",
+    fontFamily: FontFamily.bold,
+  },
+  subtitle: {
+    color: "#00cfff",
+    fontSize: FontSize.xl,
+    alignSelf: "center",
+    fontFamily: FontFamily.bold,
+  },
+  tagline: {
+    color: "#6b9acf",
+    fontSize: FontSize.sm,
+    alignSelf: "center",
+    fontFamily: FontFamily.regular,
+    marginTop: Spacing.sm,
+    lineHeight: rf(22),
+  },
+});
 
-const styles = StyleSheet.create({});
+export default Tagline;

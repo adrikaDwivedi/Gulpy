@@ -14,6 +14,9 @@ import ProgressPill from "../components/ProgressPill";
 import Tagline from "../components/Tagline";
 import ButtonComponent from "../components/ButtonComponent";
 import { getItem, KEYS } from "../storage/hydrationStorage";
+import { wp, rf } from "../utils/responsive";
+import { FontSize, FontFamily } from "../theme/typography";
+import { Spacing } from "../theme/spacing";
 
 const SplashScreen = ({ navigation }) => {
   useEffect(() => {
@@ -40,12 +43,7 @@ const SplashScreen = ({ navigation }) => {
       <Image source={require('../assets//water-droplet.png')} style={styles.logoImg} />
       </View> */}
       <View>
-        <Text style={[styles.title, { fontFamily: "Sora-ExtraBold" }]}>
-          Gulpy
-        </Text>
-        {/* <View>
-        <AnimatedDrop />
-      </View> */}
+        <Text style={styles.title}>Gulpy</Text>
         <Text style={styles.paragraphs}>
           Your daily reminder to stay hydrated!
         </Text>
@@ -71,6 +69,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#0a1628",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: Spacing.lg,
   },
   logoImg: {
     width: 80,
@@ -78,20 +77,20 @@ export const styles = StyleSheet.create({
     resizeMode: "contain",
     marginTop: -150,
   },
-
   title: {
     color: "#fff",
-    fontSize: 50,
-    fontWeight: "500",
-    fontFamily: "Sora-ExtraBold",
+    fontSize: rf(50),
+    fontFamily: FontFamily.bold,
     textAlign: "center",
   },
   paragraphs: {
     color: "#fff",
-    fontSize: 18,
-    marginTop: 20,
-    fontFamily: "DMSans-Medium",
+    fontSize: FontSize.lg,
+    marginTop: Spacing.md,
+    fontFamily: FontFamily.medium,
     textAlign: "center",
-    marginBottom: 40,
+    marginBottom: Spacing.xl,
+    lineHeight: rf(24),
+    maxWidth: wp(80),
   },
 });

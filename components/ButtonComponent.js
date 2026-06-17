@@ -6,8 +6,13 @@ import Animated, {
   withTiming,
   withSequence,
   withRepeat,
+  Easing,
 } from "react-native-reanimated";
 import { useEffect } from "react";
+import { wp, hp, rf } from "../utils/responsive";
+import { FontSize, FontFamily } from "../theme/typography";
+import { Spacing } from "../theme/spacing";
+import { Radius } from "../theme/radius";
 
 const ButtonComponent = ({
   onPress,
@@ -32,14 +37,17 @@ const ButtonComponent = ({
     const t = setTimeout(() => {
       buttonOpacity.value = withTiming(1, {
         duration: 400,
+        easing: Easing.out(Easing.quad),
       });
       buttonScale.value = withRepeat(
         withSequence(
           withTiming(1.03, {
             duration: 1200,
+            easing: Easing.inOut(Easing.ease),
           }),
           withTiming(1, {
             duration: 1200,
+            easing: Easing.inOut(Easing.ease),
           }),
         ),
         -1,
@@ -76,17 +84,21 @@ export default ButtonComponent;
 
 const styles = StyleSheet.create({
   btn: {
-    width: 280,
-    height: 70,
+    width: wp(80),
+    maxWidth: 320,
+    height: hp(7.5),
     backgroundColor: "#00cfff",
-    paddingHorizontal: 30,
-    paddingVertical: 10,
-    borderRadius: 999,
-    marginTop: 20,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: Radius.full,
+    marginTop: Spacing.lg,
+    justifyContent: "center",
+    alignItems: "center",
   },
   btnText: {
-    fontSize: 22,
+    fontSize: FontSize.md,
+    fontFamily: FontFamily.semiBold,
+    color: "#0a1628",
     textAlign: "center",
-    lineHeight: 50,
+    lineHeight: rf(26),
   },
 });

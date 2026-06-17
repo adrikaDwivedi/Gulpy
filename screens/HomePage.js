@@ -13,6 +13,11 @@ import GoalCard from "../components//GoalCard";
 import QuickAddSection from "../components//QuickAddSection";
 import CustomLogs from "../components/CustomLogs";
 import { saveItem, getItem, KEYS } from "../storage//hydrationStorage.js";
+import { wp, hp, rf } from "../utils/responsive";
+import { FontSize, FontFamily } from "../theme/typography";
+import { Spacing } from "../theme/spacing";
+import { Radius } from "../theme/radius";
+import { Shadow } from "../theme/shadow";
 
 const HomePage = () => {
   const [logs, setLogs] = useState([]);
@@ -189,74 +194,82 @@ const styles = StyleSheet.create({
     backgroundColor: "#0a1628",
   },
   headingContainer: {
-    marginTop: 20,
-    marginLeft: 20,
+    marginTop: Spacing.xl,
+    marginHorizontal: Spacing.lg,
   },
   dateText: {
     color: "#6b9acf",
-    fontSize: 18,
-    fontFamily: "DMSans-Medium",
+    fontSize: FontSize.sm,
+    fontFamily: FontFamily.medium,
   },
   hydrationText: {
-    fontSize: 30,
-    fontFamily: "Sora-ExtraBold",
+    fontSize: FontSize.xxl,
+    fontFamily: FontFamily.bold,
     color: "#fff",
+    marginTop: Spacing.xs,
+  },
+  contentContainer: {
+    paddingBottom: Spacing.xxl,
   },
   customInputContainer: {
-    width: 400,
-    height: 80,
+    width: wp(92),
+    maxWidth: 620,
     backgroundColor: "#122040",
-    borderRadius: 32,
+    borderRadius: Radius.lg,
     borderWidth: 1.5,
     borderColor: "#23406E",
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center",
-    marginTop: 20,
-    paddingHorizontal: 20,
+    marginTop: Spacing.lg,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.lg,
+    ...Shadow.card,
   },
   dropIcon: {
-    fontSize: 28,
-    marginRight: 12,
+    fontSize: rf(26),
+    marginRight: Spacing.md,
+    lineHeight: rf(30),
   },
-
   txtInput: {
     flex: 1,
-    fontSize: 20,
-    fontFamily: "DMSans-Medium",
+    fontSize: FontSize.lg,
+    fontFamily: FontFamily.medium,
     color: "#fff",
+    paddingVertical: 0,
   },
-
   addButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: wp(14),
+    height: wp(14),
+    borderRadius: Radius.full,
     backgroundColor: "#18C9FF",
     justifyContent: "center",
     alignItems: "center",
+    marginLeft: Spacing.sm,
   },
   plus: {
-    fontSize: 34,
+    fontSize: rf(32),
     color: "#0A1628",
-    marginTop: -2,
+    lineHeight: rf(34),
   },
   logsContainer: {
-    marginTop: 25,
-    paddingHorizontal: 20,
+    marginTop: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
   },
   logsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: Spacing.sm,
   },
   logsTitle: {
     color: "#fff",
-    fontSize: 24,
-    fontFamily: "Sora-ExtraBold",
+    fontSize: FontSize.xl,
+    fontFamily: FontFamily.bold,
   },
   seeAll: {
     color: "#18C9FF",
-    fontSize: 15,
+    fontSize: FontSize.sm,
+    fontFamily: FontFamily.semiBold,
   },
 });
