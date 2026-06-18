@@ -10,13 +10,12 @@ import GoalCompleteCard from '../components/Streak/GoalCompleteCard'
 const Streaks = () => {
   return (
    <SafeAreaView>
-    <Text>Heading</Text>
 
     <StreakCard/>
 
-    <StreakCalendar/>
+    {/* <StreakCalendar/>
     <StatsCard/>
-    <GoalCompleteCard/>
+    <GoalCompleteCard/> */}
 
    </SafeAreaView>
   )
