@@ -9,9 +9,12 @@ import GoalCompleteCard from '../components/Streak/GoalCompleteCard'
 
 const Streaks = () => {
   return (
-   <SafeAreaView>
+   <SafeAreaView style={styles.cont}>
 
+    <Text style={styles.heading}>June 2026</Text>
+    <Text style={styles.subheading}>Daily Goal: 2500ml</Text>
     <StreakCard/>
+
 
     {/* <StreakCalendar/>
     <StatsCard/>
@@ -24,12 +27,20 @@ const Streaks = () => {
 export default Streaks
 
 const styles = StyleSheet.create({
-calendarCard:{
-    backgroundColor:"#0F214D",
-    borderRadius:28,
-    borderWidth:1,
-    borderColor:"#27487A",
-    paddingVertical:18,
-    paddingHorizontal:12
-}
+    cont:{
+        backgroundColor: '#050927'
+    },
+heading:{
+    fontSize: 30,
+    fontWeight:'600',
+    color: '#fff',
+    marginTop: 60,
+    marginLeft: 22,
+    fontFamily: 'Sora-Regular'
+},
+subheading:{
+color: '#83b4f0',
+fontSize: 16,
+marginLeft: 22,
+},
 })
