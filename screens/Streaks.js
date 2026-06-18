@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,SafeAreaView } from 'react-native'
+import { StyleSheet, Text, View,SafeAreaView, ScrollView } from 'react-native'
 import React from 'react'
 import { Calendar } from 'react-native-calendars'
 import StreakCard from '../components/Streak/StreakCard'
@@ -10,16 +10,17 @@ import GoalCompleteCard from '../components/Streak/GoalCompleteCard'
 const Streaks = () => {
   return (
    <SafeAreaView style={styles.cont}>
-
+    <ScrollView showsVerticalScrollIndicator={false}>
     <Text style={styles.heading}>June 2026</Text>
     <Text style={styles.subheading}>Daily Goal: 2500ml</Text>
     <StreakCard/>
 
 
-    {/* <StreakCalendar/>
-    <StatsCard/>
-    <GoalCompleteCard/> */}
-
+    <StreakCalendar/>
+     <StatsCard/>
+  
+    <GoalCompleteCard/>
+    </ScrollView>
    </SafeAreaView>
   )
 }

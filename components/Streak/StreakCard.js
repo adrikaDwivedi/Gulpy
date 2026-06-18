@@ -46,7 +46,7 @@ export default StreakCard;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    marginTop: 60,
+    marginTop: 20,
     borderRadius: 28,
     padding: 20,
     flexDirection: "row",
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
   content: {
     marginLeft: 22,
     flex: 1,
