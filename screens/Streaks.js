@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { Calendar } from 'react-native-calendars'
 
 const Streaks = () => {
   return (
     <View>
-      <Text>Streaks</Text>
+      <Calendar/>
     </View>
   )
 }
