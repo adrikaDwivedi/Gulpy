@@ -7,6 +7,7 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoalCard from "../components//GoalCard";
@@ -18,8 +19,9 @@ import { FontSize, FontFamily } from "../theme/typography";
 import { Spacing } from "../theme/spacing";
 import { Radius } from "../theme/radius";
 import { Shadow } from "../theme/shadow";
+import Streaks from "./Streaks.js";
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
   const [logs, setLogs] = useState([]);
   const [dailyGoal, setDailyGoal] = useState(0);
   const [waterConsumed, setWaterConsumed] = useState(0);
@@ -129,8 +131,17 @@ const HomePage = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headingContainer}>
-          <Text style={styles.dateText}>{newDate.toString().slice(0, 16)}</Text>
-          <Text style={styles.hydrationText}>Today's Hydration</Text>
+          <View style={styles.textSection}>
+            <Text style={styles.dateText}>
+              {newDate.toString().slice(0, 16)}
+            </Text>
+            <Text style={styles.hydrationText}>Today's Hydration</Text>
+          </View>
+          <View style={styles.streaksSection}>
+            <TouchableOpacity onPress={() => navigation.navigate("Streaks")}>
+              <Ionicons name="flame-outline" size={rf(50)} color="#ed7321" />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.contentContainer}>
           <GoalCard
@@ -196,6 +207,9 @@ const styles = StyleSheet.create({
   headingContainer: {
     marginTop: Spacing.xl,
     marginHorizontal: Spacing.lg,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.md,
   },
   dateText: {
     color: "#6b9acf",
@@ -207,6 +221,14 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.bold,
     color: "#fff",
     marginTop: Spacing.xs,
+  },
+  streaksSection: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: -Spacing.xxl,
+  },
+  textSection: {
+    flex: 1,
   },
   contentContainer: {
     paddingBottom: Spacing.xxl,
