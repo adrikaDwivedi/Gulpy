@@ -1,32 +1,43 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 
-const CalendarDay = ({date, state, status}) => {
+const CalendarDay = ({ date, state, status, isToday }) => {
   return (
     <View
-    style={[
-      styles.dayContainer,
-      status=="completed" && styles.completedDay,
-      status === 'disabled' && styles.disabledContainer
-    ]}
+      style={[
+        styles.dayContainer,
+        status == "completed" && styles.completedDay,
+        status == "missed" && styles.missedDay,
+        isToday &&
+          status !== "completed" &&
+          status !== "missed" &&
+          styles.todayDay,
+
+        status === "disabled" && styles.disabledContainer,
+      ]}
     >
       <Text
-      style={[
-        styles.dayText,
-        status === "completed" && styles.completedText,
-        state==='disabled' && styles.disabledText,
-      ]}
+        style={[
+          styles.dayText,
+          status === "completed" && styles.completedText,
+          status === "missed" && styles.missedtext,
+          isToday &&
+            status !== "completed" &&
+            status !== "missed" &&
+            styles.todayText,
+          state === "disabled" && styles.disabledText,
+        ]}
       >
-          {date.day}
+        {date.day}
       </Text>
     </View>
-  )
-}
+  );
+};
 
-export default CalendarDay
+export default CalendarDay;
 
 const styles = StyleSheet.create({
-   dayContainer: {
+  dayContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -47,20 +58,41 @@ const styles = StyleSheet.create({
   disabledText: {
     color: "#6F8DB8",
   },
-completedDay: {
-  backgroundColor: "#3F8CFF",
-  borderRadius: 28,
-  shadowColor: "#3F8CFF",
-  shadowOpacity: 0.35,
-  shadowRadius: 8,
-  shadowOffset: {
-    width: 0,
-    height: 3,
+  completedDay: {
+    backgroundColor: "#3F8CFF",
+    borderRadius: 28,
+    shadowColor: "#3F8CFF",
+    shadowOpacity: 0.35,
+    shadowRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    elevation: 5,
   },
-  elevation: 5,
-},
-completedText: {
-  color: "#FFFFFF",
-  fontFamily: "Sora-Bold",
-},
-})
+  completedText: {
+    color: "#FFFFFF",
+    fontFamily: "Sora-Bold",
+  },
+  todayDay: {
+    backgroundColor: "#173C73",
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: "#5AA8FF",
+  },
+  todayText: {
+    color: "#FFFFFF",
+    fontFamily: "Sora-Bold",
+  },
+  missedDay: {
+    borderWidth: 1,
+    borderColor: "#FF5B5B",
+    borderRadius: 28,
+    backgroundColor: "transparent",
+  },
+
+  missedText: {
+    color: "#FF5B5B",
+    fontFamily: "Sora-Bold",
+  },
+});

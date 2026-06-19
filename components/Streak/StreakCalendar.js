@@ -5,8 +5,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { useState } from "react";
 import CalendarDay from "./CalendarDay";
+import CalendarLegend from "./CalendarLegend";
+
 
 const StreakCalendar = () => {
+
+  const today = new Date().toISOString().split("T")[0];
+
   const [currentMonth, setCurrentMonth] = useState("2026-06-20");
 
   const monthName = new Date(currentMonth).toLocaleString("default", {
@@ -31,6 +36,10 @@ const StreakCalendar = () => {
   "2026-06-08": "completed",
   "2026-06-10": "completed",
   "2026-06-13": "completed",
+
+    "2026-06-04": "missed",
+  "2026-06-09": "missed",
+  "2026-06-15": "missed",
     }
 
   return (
@@ -81,6 +90,7 @@ const StreakCalendar = () => {
           date={date}
           state={state}
           status={dummyData[date.dateString]}
+          isToday={date.dateString === today}
           />
         )}
         theme={{
@@ -106,6 +116,7 @@ const StreakCalendar = () => {
           arrowColor: "transparent",
         }}
       />
+      <CalendarLegend/>
     </LinearGradient>
   );
 };
