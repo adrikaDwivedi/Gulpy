@@ -1,18 +1,75 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useMemo } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { useState } from "react";
-import CalendarDay from "./CalendarDay";
 import CalendarLegend from "./CalendarLegend";
-
+import { getItem, KEYS } from "../../storage/hydrationStorage";
 
 const StreakCalendar = () => {
+  const [streakData, setStreakData] = useState({});
+  const [currentMonth, setCurrentMonth] = useState(
+    new Date().toISOString().split("T")[0],
+  );
 
   const today = new Date().toISOString().split("T")[0];
 
-  const [currentMonth, setCurrentMonth] = useState("2026-06-20");
+  const markedDates = useMemo(() => {
+    const marks = {};
+
+    Object.entries(streakData).forEach(([date, status]) => {
+      if (status === "completed") {
+        marks[date] = {
+          customStyles: {
+            container: {
+              backgroundColor: "#3F8CFF",
+              borderRadius: 20,
+            },
+            text: {
+              color: "#FFFFFF",
+              fontFamily: "Sora-Bold",
+            },
+          },
+        };
+      } else if (status === "missed") {
+        marks[date] = {
+          customStyles: {
+            container: {
+              backgroundColor: "transparent",
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: "#FF5B5B",
+            },
+            text: {
+              color: "#FF5B5B",
+              fontFamily: "Sora-Bold",
+            },
+          },
+        };
+      }
+    });
+
+    if (!marks[today]) {
+      marks[today] = {
+        customStyles: {
+          container: {
+            borderWidth: 1,
+            borderColor: "#5AA8FF",
+            backgroundColor: "#173C73",
+            borderRadius: 20,
+          },
+          text: {
+            color: "#FFFFFF",
+            fontFamily: "Sora-Bold",
+          },
+        },
+      };
+    }
+
+    return marks;
+  }, [streakData, today]);
 
   const monthName = new Date(currentMonth).toLocaleString("default", {
     month: "long",
@@ -29,18 +86,48 @@ const StreakCalendar = () => {
     setCurrentMonth(date.toISOString().split("T")[0]);
   };
 
-    const dummyData = {
-     "2026-06-02": "completed",
-  "2026-06-03": "completed",
-  "2026-06-05": "completed",
-  "2026-06-08": "completed",
-  "2026-06-10": "completed",
-  "2026-06-13": "completed",
+  //   const dummyData = {
+  //    "2026-06-02": "completed",
+  // "2026-06-03": "completed",
+  // "2026-06-05": "completed",
+  // "2026-06-08": "completed",
+  // "2026-06-10": "completed",
+  // "2026-06-13": "completed",
 
-    "2026-06-04": "missed",
-  "2026-06-09": "missed",
-  "2026-06-15": "missed",
-    }
+  //   "2026-06-04": "missed",
+  // "2026-06-09": "missed",
+  // "2026-06-15": "missed",
+  //   }
+
+  const loadCalendar = async () => {
+    const waterLogs = (await getItem(KEYS.WATER_LOGS)) || {};
+
+    const calendar = {};
+
+    Object.keys(waterLogs).forEach((date) => {
+      const day = waterLogs[date];
+
+      if (date === today) {
+        if (day.intake >= day.goal) {
+          calendar[date] = "completed";
+        }
+        // If today's goal isn't reached yet,
+        // leave it undefined so your "Today" UI is shown.
+      } else if (day.intake >= day.goal) {
+        calendar[date] = "completed";
+      } else {
+        calendar[date] = "missed";
+      }
+    });
+
+    setStreakData(calendar);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadCalendar();
+    }, []),
+  );
 
   return (
     <LinearGradient
@@ -68,15 +155,17 @@ const StreakCalendar = () => {
           <Ionicons name="chevron-forward" size={24} color="#8EB9F5" />
         </TouchableOpacity>
       </View>
-        <View style={styles.weekRows}>
-        {["Sun" , "Mon" , "Tue" , "Wed" , "Thu" , "Fri" , "Sat"].map(day =>(
+      <View style={styles.weekRows}>
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <Text key={day} style={styles.weekText}>
             {day}
           </Text>
         ))}
-        </View>
+      </View>
       <Calendar
         current={currentMonth}
+        markingType="custom"
+        markedDates={markedDates}
         hideArrows
         enableSwipeMonths
         showSixWeeks
@@ -84,15 +173,6 @@ const StreakCalendar = () => {
         firstDay={0}
         hideDayNames={true}
         style={styles.calendar}
-
-        dayComponent={({date,state}) => (
-          <CalendarDay
-          date={date}
-          state={state}
-          status={dummyData[date.dateString]}
-          isToday={date.dateString === today}
-          />
-        )}
         theme={{
           backgroundColor: "transparent",
           calendarBackground: "transparent",
@@ -116,7 +196,7 @@ const StreakCalendar = () => {
           arrowColor: "transparent",
         }}
       />
-      <CalendarLegend/>
+      <CalendarLegend />
     </LinearGradient>
   );
 };
@@ -152,19 +232,19 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   calendar: {
-  backgroundColor: "transparent",
-  width: '100%',
-},
-weekRows: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  marginBottom: -30,
-},
-weekText: {
-  width: "14.28%",
-  textAlign: "center",
-  color: "#7EA8DD",
-  fontFamily: "Sora-SemiBold",
-  fontSize: 14,
-},
+    backgroundColor: "transparent",
+    width: "100%",
+  },
+  weekRows: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: -30,
+  },
+  weekText: {
+    width: "14.28%",
+    textAlign: "center",
+    color: "#7EA8DD",
+    fontFamily: "Sora-SemiBold",
+    fontSize: 14,
+  },
 });

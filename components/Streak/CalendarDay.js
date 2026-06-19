@@ -13,14 +13,13 @@ const CalendarDay = ({ date, state, status, isToday }) => {
           status !== "missed" &&
           styles.todayDay,
 
-        status === "disabled" && styles.disabledContainer,
-      ]}
+state === "disabled" && styles.disabledContainer,      ]}
     >
       <Text
         style={[
           styles.dayText,
           status === "completed" && styles.completedText,
-          status === "missed" && styles.missedtext,
+          status === "missed" && styles.missedText,
           isToday &&
             status !== "completed" &&
             status !== "missed" &&

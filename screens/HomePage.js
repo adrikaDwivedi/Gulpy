@@ -41,6 +41,17 @@ const HomePage = ({ navigation }) => {
 
       await saveItem(KEYS.CURRENT_INTAKE, updatedWater);
 
+      const today = new Date().toISOString().split("T")[0];
+
+      const waterLogs = (await getItem(KEYS.WATER_LOGS)) || {};
+
+      waterLogs[today] = {
+        goal: dailyGoal,
+        intake: updatedWater,
+      };
+
+      await saveItem(KEYS.WATER_LOGS, waterLogs);
+
       const newLog = {
         id: Date.now().toString(),
         amount,
@@ -65,7 +76,7 @@ const HomePage = ({ navigation }) => {
 
   const saveLogs = async (logsToSave) => {
     try {
-      await saveItem(KEYS.WATER_LOGS, logsToSave);
+      await saveItem(KEYS.WATER_LOG_ENTRIES, logsToSave);
       console.log("Logs saved:", logsToSave);
     } catch (error) {
       console.log(error);
@@ -74,7 +85,7 @@ const HomePage = ({ navigation }) => {
 
   const loadLogs = async () => {
     try {
-      const savedLogs = await getItem(KEYS.WATER_LOGS);
+      const savedLogs = await getItem(KEYS.WATER_LOG_ENTRIES);
       if (savedLogs) {
         setLogs(savedLogs);
         console.log("Loaded Logs:", savedLogs);
@@ -113,7 +124,7 @@ const HomePage = ({ navigation }) => {
     try {
       const savedGoal = await getItem(KEYS.DAILY_GOAL);
       console.log("Goal Retrieved: ", savedGoal);
-      if (savedGoal) {
+      if (savedGoal !== null) {
         setDailyGoal(savedGoal);
       }
     } catch (error) {
