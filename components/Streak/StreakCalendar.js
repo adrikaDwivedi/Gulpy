@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { useState } from "react";
+import CalendarDay from "./CalendarDay";
 
 const StreakCalendar = () => {
   const [currentMonth, setCurrentMonth] = useState("2026-06-20");
@@ -22,6 +23,15 @@ const StreakCalendar = () => {
     }
     setCurrentMonth(date.toISOString().split("T")[0]);
   };
+
+    const dummyData = {
+     "2026-06-02": "completed",
+  "2026-06-03": "completed",
+  "2026-06-05": "completed",
+  "2026-06-08": "completed",
+  "2026-06-10": "completed",
+  "2026-06-13": "completed",
+    }
 
   return (
     <LinearGradient
@@ -65,13 +75,20 @@ const StreakCalendar = () => {
         firstDay={0}
         hideDayNames={true}
         style={styles.calendar}
+
+        dayComponent={({date,state}) => (
+          <CalendarDay
+          date={date}
+          state={state}
+          status={dummyData[date.dateString]}
+          />
+        )}
         theme={{
           backgroundColor: "transparent",
           calendarBackground: "transparent",
 
           // Hide default month
           monthTextColor: "transparent",
-          monthFontSize: 0,
 
           // Weekdays
           textSectionTitleColor: "#7EA8DD",
@@ -81,9 +98,6 @@ const StreakCalendar = () => {
           // Days
           dayTextColor: "#FFFFFF",
           textDisabledColor: "#365886",
-
-          textDayFontFamily: "Sora-Regular",
-          textDayFontSize: 14,
 
           // Remove today's default styling
           todayTextColor: "#FFFFFF",
