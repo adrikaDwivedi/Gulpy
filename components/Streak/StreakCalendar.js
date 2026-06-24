@@ -7,6 +7,7 @@ import { Calendar } from "react-native-calendars";
 import { useState } from "react";
 import CalendarLegend from "./CalendarLegend";
 import { getItem, KEYS } from "../../storage/hydrationStorage";
+import {getDateString} from '../../utils/streakUtils'
 
 const StreakCalendar = () => {
   const [streakData, setStreakData] = useState({});
@@ -14,7 +15,7 @@ const StreakCalendar = () => {
     new Date().toISOString().split("T")[0],
   );
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = getDateString();
 
   const markedDates = useMemo(() => {
     const marks = {};
@@ -104,19 +105,17 @@ const StreakCalendar = () => {
 
     const calendar = {};
 
-    Object.keys(waterLogs).forEach((date) => {
-      const day = waterLogs[date];
+    Object.entries(waterLogs).forEach(([date , day]) => {
+      const completed = day.intake >= day.goal;
 
       if (date === today) {
-        if (day.intake >= day.goal) {
+        if (completed) {
           calendar[date] = "completed";
         }
         // If today's goal isn't reached yet,
         // leave it undefined so your "Today" UI is shown.
-      } else if (day.intake >= day.goal) {
-        calendar[date] = "completed";
       } else {
-        calendar[date] = "missed";
+        calendar[date] = completed ? "completed" : "missed";
       }
     });
 
@@ -162,17 +161,22 @@ const StreakCalendar = () => {
           </Text>
         ))}
       </View>
-      <Calendar
+     <Calendar
         current={currentMonth}
+         onMonthChange={(month) =>
+    setCurrentMonth(`${month.year}-${String(month.month).padStart(2, "0")}-01`)
+  }
         markingType="custom"
         markedDates={markedDates}
         hideArrows
+          hideDayNames
         enableSwipeMonths
         showSixWeeks
         hideExtraDays={false}
         firstDay={0}
         hideDayNames={true}
-        style={styles.calendar}
+        renderHeader={() => null}
+          style={styles.calendar}
         theme={{
           backgroundColor: "transparent",
           calendarBackground: "transparent",
@@ -185,7 +189,7 @@ const StreakCalendar = () => {
           textDayHeaderFontFamily: "Sora-SemiBold",
           textDayHeaderFontSize: 14,
 
-          // Days
+          // D ays
           dayTextColor: "#FFFFFF",
           textDisabledColor: "#365886",
 
@@ -238,7 +242,7 @@ const styles = StyleSheet.create({
   weekRows: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: -30,
+    marginBottom: 0,
   },
   weekText: {
     width: "14.28%",
