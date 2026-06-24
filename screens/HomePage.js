@@ -155,11 +155,31 @@ const HomePage = ({ navigation }) => {
   }
 };
 
+const checkDailyReset = async () =>{
+  try {
+    const today = getDateString();
+    const lastOpenDate = await getItem(KEYS.LAST_OPEN_DATE);
+
+    if(today !== lastOpenDate){
+      await saveItem(KEYS.CURRENT_INTAKE , 0);
+      setWaterConsumed(0);
+      await saveItem(KEYS.LAST_OPEN_DATE, today)
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
   useEffect(() => {
-    loadGoal();
-    loadCurrentIntake();
-    loadLogs();
-    loadCurrentStreak();
+   const initializeApp = async() =>{ 
+    await checkDailyReset(),
+
+    await loadGoal();
+    await loadCurrentIntake();
+    await loadLogs();
+    await loadCurrentStreak();
+   }
+   initializeApp();
   }, []);
 
   return (
