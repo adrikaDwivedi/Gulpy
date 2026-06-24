@@ -20,12 +20,18 @@ import { Spacing } from "../theme/spacing";
 import { Radius } from "../theme/radius";
 import { Shadow } from "../theme/shadow";
 import Streaks from "./Streaks.js";
+import {
+  calculateCurrentStreak,
+  calculateLongestStreak,
+  getDateString,
+} from "../utils/streakUtils";
 
 const HomePage = ({ navigation }) => {
   const [logs, setLogs] = useState([]);
   const [dailyGoal, setDailyGoal] = useState(0);
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [customAmount, setCustomAmount] = useState("");
+  const [currentStreak , setCurrentStreak] = useState(0);
 
   const progress = dailyGoal
     ? Math.min((waterConsumed / dailyGoal) * 100, 100)
@@ -41,7 +47,8 @@ const HomePage = ({ navigation }) => {
 
       await saveItem(KEYS.CURRENT_INTAKE, updatedWater);
 
-      const today = new Date().toISOString().split("T")[0];
+
+     const today = getDateString();
 
       const waterLogs = (await getItem(KEYS.WATER_LOGS)) || {};
 
@@ -51,6 +58,10 @@ const HomePage = ({ navigation }) => {
       };
 
       await saveItem(KEYS.WATER_LOGS, waterLogs);
+
+            //// streak 
+      const streak = calculateCurrentStreak(waterLogs);
+      setCurrentStreak(streak);
 
       const newLog = {
         id: Date.now().toString(),
@@ -132,10 +143,23 @@ const HomePage = ({ navigation }) => {
     }
   };
 
+  const loadCurrentStreak = async () => {
+  try {
+    const waterLogs = await getItem(KEYS.WATER_LOGS);
+
+    const streak = calculateCurrentStreak(waterLogs);
+
+    setCurrentStreak(streak);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
   useEffect(() => {
     loadGoal();
     loadCurrentIntake();
     loadLogs();
+    loadCurrentStreak();
   }, []);
 
   return (
