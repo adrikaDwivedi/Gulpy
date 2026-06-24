@@ -5,9 +5,20 @@ import StreakCard from '../components/Streak/StreakCard'
 import StreakCalendar from '../components/Streak/StreakCalendar'
 import StatsCard from '../components/Streak/StatsCard'
 import GoalCompleteCard from '../components/Streak/GoalCompleteCard' 
+import { useEffect, useState } from "react";
+import { getItem, KEYS } from "../storage/hydrationStorage";
+import {
+  calculateCurrentStreak,
+  calculateLongestStreak,
+} from "../utils/streakUtils";
 
 
 const Streaks = () => {
+
+const [waterLogs, setWaterLogs] = useState({});
+const [currentStreak, setCurrentStreak] = useState(0);
+const [longestStreak, setLongestStreak] = useState(0);
+
   return (
    <SafeAreaView style={styles.cont}>
     <ScrollView showsVerticalScrollIndicator={false}>

@@ -17,7 +17,7 @@ const stats = [
   },
 ];
 
-const StatsCards = () => {
+const StatsCards = ({stats}) => {
   return (
     <View style={styles.container}>
       {stats.map((item, index) => (

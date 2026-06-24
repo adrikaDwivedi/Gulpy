@@ -172,7 +172,7 @@ const checkDailyReset = async () =>{
 
   useEffect(() => {
    const initializeApp = async() =>{ 
-    await checkDailyReset(),
+    await checkDailyReset();
 
     await loadGoal();
     await loadCurrentIntake();
