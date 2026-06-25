@@ -134,7 +134,7 @@ const StreakCalendar = () => {
 
   return (
     <LinearGradient
-      colors={["#10295A", "#0C214B"]}
+      colors={["#10295A", "#112d65"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.cont}
@@ -189,7 +189,7 @@ const StreakCalendar = () => {
           monthTextColor: "transparent",
           textSectionTitleColor: "#7EA8DD",
           textDayHeaderFontFamily: FontFamily.semiBold,
-          textDayHeaderFontSize: rf(14),
+          textDayHeaderFontSize: rf(10),
           dayTextColor: "#FFFFFF",
           textDisabledColor: "#365886",
           todayTextColor: "#FFFFFF",
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   },
   monthtxt: {
     color: "#FFFFFF",
-    fontSize: FontSize.xxl,
+    fontSize: FontSize.lg,
     fontFamily: FontFamily.bold,
   },
   arrbtn: {

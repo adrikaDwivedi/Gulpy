@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { wp, rf } from "../../utils/responsive";
@@ -11,14 +11,19 @@ import { Shadow } from "../../theme/shadow";
 const StreakCard = () => {
   return (
     <LinearGradient
-      colors={["#082654", "#0A2A57"]}
+      colors={["#10295A", "#112d65"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}
     >
-      <View style={styles.iconContainer}>
-        <Ionicons name="flame-outline" size={52} color="#FFF" />
-      </View>
+      
+        {/* <Ionicons name="flame-outline" size={52} color="#FFF" /> */}
+      <Image 
+      source={require("../../assets/flame-icon.png")}
+      style={styles.icon}
+      />
+
+      
 
       <View style={styles.content}>
         <Text style={styles.label}>Current streak</Text>
@@ -49,13 +54,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     ...Shadow.card,
   },
-  iconContainer: {
-    width: wp(21),
-    height: wp(21),
-    borderRadius: Radius.lg,
-    backgroundColor: "#FF9800",
-    justifyContent: "center",
-    alignItems: "center",
+  icon: {
+    width: 50,
+    height:50,
+    shadowColor: "#f5690c",
+  shadowOffset: {
+    width: 1,
+    height: 2,
+  },
+  shadowOpacity: 1,
+  shadowRadius: 3,
+
+  // Android Shadow
+  elevation: 3,
   },
   content: {
     marginLeft: Spacing.lg,

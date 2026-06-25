@@ -10,7 +10,7 @@ import { rf } from "../../utils/responsive";
 const GoalCompletedCard = () => {
   return (
     <LinearGradient
-      colors={["#123B78", "#0A2A57"]}
+      colors={["#10295A", "#112d65"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}
