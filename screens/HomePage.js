@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
@@ -194,7 +195,10 @@ const checkDailyReset = async () =>{
           </View>
           <View style={styles.streaksSection}>
             <TouchableOpacity onPress={() => navigation.navigate("Streaks")}>
-              <Ionicons name="flame-outline" size={rf(50)} color="#ed7321" />
+                  <Image 
+                  source={require("../assets/flame-icon.png")}
+                  style={styles.icon}
+                  />
             </TouchableOpacity>
           </View>
         </View>
@@ -215,7 +219,7 @@ const checkDailyReset = async () =>{
 
               <TextInput
                 style={styles.txtInput}
-                placeholder="Custom amount (ml)..."
+                placeholder="Custom amount (ml)"
                 placeholderTextColor="#6b9acf"
                 keyboardType="numeric"
                 value={customAmount}
@@ -304,13 +308,27 @@ const styles = StyleSheet.create({
     ...Shadow.card,
   },
   dropIcon: {
-    fontSize: rf(26),
+    fontSize: rf(22),
     marginRight: Spacing.md,
     lineHeight: rf(30),
   },
+    icon: {
+    width: 50,
+    height:50,
+    shadowColor: "#f5690c",
+  shadowOffset: {
+    width: 1,
+    height: 2,
+  },
+  shadowOpacity: 1,
+  shadowRadius: 3,
+
+  // Android Shadow
+  elevation: 3,
+  },
   txtInput: {
     flex: 1,
-    fontSize: FontSize.lg,
+    fontSize: FontSize.md,
     fontFamily: FontFamily.medium,
     color: "#fff",
     paddingVertical: 0,
@@ -327,7 +345,7 @@ const styles = StyleSheet.create({
   plus: {
     fontSize: rf(32),
     color: "#0A1628",
-    lineHeight: rf(34),
+    // lineHeight: rf(32),
   },
   logsContainer: {
     marginTop: Spacing.lg,
