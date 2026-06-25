@@ -2,6 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { FontSize, FontFamily } from "../../theme/typography";
+import { Spacing } from "../../theme/spacing";
+import { Radius } from "../../theme/radius";
+import { rf } from "../../utils/responsive";
 
 const GoalCompletedCard = () => {
   return (
@@ -12,25 +16,15 @@ const GoalCompletedCard = () => {
       style={styles.container}
     >
       <View style={styles.icon}>
-        <Ionicons
-          name="checkmark-circle"
-          size={38}
-          color="#22D3A6"
-        />
+        <Ionicons name="checkmark-circle" size={38} color="#22D3A6" />
       </View>
 
       <View style={styles.textContainer}>
-        <Text style={styles.title}>
-          Today's Goal Complete!
-        </Text>
+        <Text style={styles.title}>Today's Goal Complete!</Text>
 
-        <Text style={styles.subtitle}>
-          2500 ml reached today
-        </Text>
+        <Text style={styles.subtitle}>2500 ml reached today</Text>
 
-        <Text style={styles.caption}>
-          Keep the streak alive 💧
-        </Text>
+        <Text style={styles.caption}>Keep the streak alive 💧</Text>
       </View>
     </LinearGradient>
   );
@@ -40,45 +34,37 @@ export default GoalCompletedCard;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
-    marginTop: 22,
-    marginBottom: 40,
-
-    borderRadius: 24,
-    padding: 20,
-
+    marginHorizontal: Spacing.lg,
+    marginTop: Spacing.md,
+    marginBottom: Spacing.xxl,
+    borderRadius: Radius.lg,
+    padding: Spacing.lg,
     flexDirection: "row",
     alignItems: "center",
-
     borderWidth: 1,
     borderColor: "#2C4E81",
   },
-
   icon: {
-    marginRight: 16,
+    marginRight: Spacing.md,
   },
-
   textContainer: {
     flex: 1,
   },
-
   title: {
     color: "#FFFFFF",
-    fontSize: 18,
-    fontFamily: "Sora-Bold",
+    fontSize: FontSize.md,
+    fontFamily: FontFamily.bold,
   },
-
   subtitle: {
     color: "#A4C5ED",
-    marginTop: 4,
-    fontSize: 14,
-    fontFamily: "Sora-Regular",
+    marginTop: Spacing.xs,
+    fontSize: FontSize.sm,
+    fontFamily: FontFamily.regular,
   },
-
   caption: {
     color: "#22D3A6",
-    marginTop: 8,
-    fontSize: 13,
-    fontFamily: "Sora-SemiBold",
+    marginTop: Spacing.sm,
+    fontSize: FontSize.sm,
+    fontFamily: FontFamily.semiBold,
   },
 });

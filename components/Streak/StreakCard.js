@@ -2,6 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { wp, rf } from "../../utils/responsive";
+import { FontSize, FontFamily } from "../../theme/typography";
+import { Spacing } from "../../theme/spacing";
+import { Radius } from "../../theme/radius";
+import { Shadow } from "../../theme/shadow";
 
 const StreakCard = () => {
   return (
@@ -12,11 +17,7 @@ const StreakCard = () => {
       style={styles.container}
     >
       <View style={styles.iconContainer}>
-        <Ionicons
-          name="flame-outline"
-          size={52}
-          color="#FFF"
-        />
+        <Ionicons name="flame-outline" size={52} color="#FFF" />
       </View>
 
       <View style={styles.content}>
@@ -27,13 +28,8 @@ const StreakCard = () => {
           <Text style={styles.days}>days</Text>
         </View>
 
-
         <Text style={styles.subtitle}>
-        <Ionicons 
-      name="checkmark-done-outline"
-      size={20}
-      color="#fff"
-      />
+          <Ionicons name="checkmark-done-outline" size={20} color="#fff" />
           Goal hit every day!
         </Text>
       </View>
@@ -45,39 +41,31 @@ export default StreakCard;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 28,
-    padding: 20,
+    marginHorizontal: Spacing.lg,
+    marginTop: Spacing.lg,
+    borderRadius: Radius.lg,
+    padding: Spacing.lg,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 15,
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    elevation: 8,
+    ...Shadow.card,
   },
-
   iconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 28,
+    width: wp(21),
+    height: wp(21),
+    borderRadius: Radius.lg,
     backgroundColor: "#FF9800",
     justifyContent: "center",
     alignItems: "center",
   },
   content: {
-    marginLeft: 22,
+    marginLeft: Spacing.lg,
     flex: 1,
   },
   label: {
     color: "#7DA7DF",
-    fontSize: 18,
-    fontFamily: "Sora-Regular",
-    marginBottom: 2,
+    fontSize: FontSize.md,
+    fontFamily: FontFamily.regular,
+    marginBottom: Spacing.xs,
   },
   daysRow: {
     flexDirection: "row",
@@ -85,21 +73,21 @@ const styles = StyleSheet.create({
   },
   number: {
     color: "#FFFFFF",
-    fontSize: 64,
-    fontFamily: "Sora-Bold",
-    lineHeight: 68,
+    fontSize: rf(64),
+    fontFamily: FontFamily.bold,
+    lineHeight: rf(68),
   },
   days: {
     color: "#00CFFF",
-    fontSize: 28,
-    fontFamily: "Sora-Bold",
-    marginLeft: 8,
-    marginBottom: 10,
+    fontSize: FontSize.lg,
+    fontFamily: FontFamily.bold,
+    marginLeft: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   subtitle: {
     color: "#7DA7DF",
-    fontSize: 17,
-    fontFamily: "Sora-Regular",
-    marginTop: 4,
+    fontSize: FontSize.md,
+    fontFamily: FontFamily.regular,
+    marginTop: Spacing.xs,
   },
 });

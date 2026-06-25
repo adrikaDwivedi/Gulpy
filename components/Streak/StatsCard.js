@@ -1,8 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { wp, rf } from "../../utils/responsive";
+import { FontSize, FontFamily } from "../../theme/typography";
+import { Spacing } from "../../theme/spacing";
+import { Radius } from "../../theme/radius";
 
-const stats = [
+const statsData = [
   {
     value: "24",
     label: "Days Hit",
@@ -17,7 +21,7 @@ const stats = [
   },
 ];
 
-const StatsCards = ({stats}) => {
+const StatsCards = ({ stats = statsData }) => {
   return (
     <View style={styles.container}>
       {stats.map((item, index) => (
@@ -42,30 +46,27 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 20,
-    marginTop: 22,
+    marginHorizontal: Spacing.lg,
+    marginTop: Spacing.md,
+    gap: Spacing.sm,
   },
-
   card: {
-    width: "31%",
-    borderRadius: 22,
-    paddingVertical: 20,
+    flex: 1,
+    borderRadius: Radius.lg,
+    paddingVertical: Spacing.lg,
     alignItems: "center",
-
     borderWidth: 1,
     borderColor: "#2C4E81",
   },
-
   value: {
-    fontSize: 28,
-    fontFamily: "Sora-Bold",
+    fontSize: FontSize.xxl,
+    fontFamily: FontFamily.bold,
     color: "#FFFFFF",
   },
-
   label: {
-    marginTop: 8,
-    fontSize: 13,
-    fontFamily: "Sora-Regular",
+    marginTop: Spacing.xs,
+    fontSize: FontSize.sm,
+    fontFamily: FontFamily.regular,
     color: "#82A8D8",
     textAlign: "center",
   },

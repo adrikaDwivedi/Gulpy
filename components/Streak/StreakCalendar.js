@@ -7,7 +7,11 @@ import { Calendar } from "react-native-calendars";
 import { useState } from "react";
 import CalendarLegend from "./CalendarLegend";
 import { getItem, KEYS } from "../../storage/hydrationStorage";
-import {getDateString} from '../../utils/streakUtils'
+import { getDateString } from "../../utils/streakUtils";
+import { wp, rf } from "../../utils/responsive";
+import { FontSize, FontFamily } from "../../theme/typography";
+import { Spacing } from "../../theme/spacing";
+import { Radius } from "../../theme/radius";
 
 const StreakCalendar = () => {
   const [streakData, setStreakData] = useState({});
@@ -105,7 +109,7 @@ const StreakCalendar = () => {
 
     const calendar = {};
 
-    Object.entries(waterLogs).forEach(([date , day]) => {
+    Object.entries(waterLogs).forEach(([date, day]) => {
       const completed = day.intake >= day.goal;
 
       if (date === today) {
@@ -142,7 +146,7 @@ const StreakCalendar = () => {
           onPress={() => changeMonth("prev")}
           style={styles.arrbtn}
         >
-          <Ionicons name="chevron-back" size={24} color="#8EB9F5" />
+          <Ionicons name="chevron-back" size={rf(24)} color="#8EB9F5" />
         </TouchableOpacity>
 
         <Text style={styles.monthtxt}>{monthName}</Text>
@@ -151,7 +155,7 @@ const StreakCalendar = () => {
           onPress={() => changeMonth("next")}
           style={styles.arrbtn}
         >
-          <Ionicons name="chevron-forward" size={24} color="#8EB9F5" />
+          <Ionicons name="chevron-forward" size={rf(24)} color="#8EB9F5" />
         </TouchableOpacity>
       </View>
       <View style={styles.weekRows}>
@@ -161,42 +165,34 @@ const StreakCalendar = () => {
           </Text>
         ))}
       </View>
-     <Calendar
+      <Calendar
         current={currentMonth}
-         onMonthChange={(month) =>
-    setCurrentMonth(`${month.year}-${String(month.month).padStart(2, "0")}-01`)
-  }
+        onMonthChange={(month) =>
+          setCurrentMonth(
+            `${month.year}-${String(month.month).padStart(2, "0")}-01`,
+          )
+        }
         markingType="custom"
         markedDates={markedDates}
         hideArrows
-          hideDayNames
+        hideDayNames
         enableSwipeMonths
         showSixWeeks
         hideExtraDays={false}
         firstDay={0}
         hideDayNames={true}
         renderHeader={() => null}
-          style={styles.calendar}
+        style={styles.calendar}
         theme={{
           backgroundColor: "transparent",
           calendarBackground: "transparent",
-
-          // Hide default month
           monthTextColor: "transparent",
-
-          // Weekdays
           textSectionTitleColor: "#7EA8DD",
-          textDayHeaderFontFamily: "Sora-SemiBold",
-          textDayHeaderFontSize: 14,
-
-          // D ays
+          textDayHeaderFontFamily: FontFamily.semiBold,
+          textDayHeaderFontSize: rf(14),
           dayTextColor: "#FFFFFF",
           textDisabledColor: "#365886",
-
-          // Remove today's default styling
           todayTextColor: "#FFFFFF",
-
-          // Hide default arrows
           arrowColor: "transparent",
         }}
       />
@@ -209,22 +205,22 @@ export default StreakCalendar;
 
 const styles = StyleSheet.create({
   cont: {
-    marginHorizontal: 12,
-    marginTop: 25,
-    borderRadius: 30,
+    marginHorizontal: Spacing.sm,
+    marginTop: Spacing.lg,
+    borderRadius: Radius.xl,
     borderWidth: 1,
     borderColor: "#2D4F84",
-    padding: 20,
+    padding: Spacing.lg,
   },
   monthtxt: {
     color: "#FFFFFF",
-    fontSize: 30,
-    fontFamily: "Sora-Bold",
+    fontSize: FontSize.xxl,
+    fontFamily: FontFamily.bold,
   },
   arrbtn: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: wp(13),
+    height: wp(13),
+    borderRadius: Radius.lg,
     backgroundColor: "#16376B",
     justifyContent: "center",
     alignItems: "center",
@@ -233,7 +229,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 25,
+    marginBottom: Spacing.lg,
   },
   calendar: {
     backgroundColor: "transparent",
@@ -248,7 +244,7 @@ const styles = StyleSheet.create({
     width: "14.28%",
     textAlign: "center",
     color: "#7EA8DD",
-    fontFamily: "Sora-SemiBold",
-    fontSize: 14,
+    fontFamily: FontFamily.semiBold,
+    fontSize: FontSize.sm,
   },
 });
