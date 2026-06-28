@@ -20,6 +20,15 @@ const Streaks = () => {
   const [currentStreak, setCurrentStreak] = useState(0);
   const [longestStreak, setLongestStreak] = useState(0);
 
+  useEffect(() => {
+    loadLogs();
+}, []);
+
+const loadLogs = async () => {
+    const logs = await getItem(KEYS.WATER_LOGS);
+    setWaterLogs(logs || {});
+}
+
   return (
     <SafeAreaView style={styles.cont}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -28,7 +37,7 @@ const Streaks = () => {
         <StreakCard />
 
         <StreakCalendar />
-        <StatsCard />
+        <StatsCard waterLogs={waterLogs}/>
 
         <GoalCompleteCard />
       </ScrollView>

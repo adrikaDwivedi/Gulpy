@@ -1,30 +1,43 @@
-import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { wp, rf } from "../../utils/responsive";
+
 import { FontSize, FontFamily } from "../../theme/typography";
 import { Spacing } from "../../theme/spacing";
 import { Radius } from "../../theme/radius";
 
-const statsData = [
-  {
-    value: "24",
-    label: "Days Hit",
-  },
-  {
-    value: "4",
-    label: "Missed",
-  },
-  {
-    value: "80%",
-    label: "Success Rate",
-  },
-];
+import { getStats } from "../../utils/statsUtils"; // <-- check filename
 
-const StatsCards = ({ stats = statsData }) => {
+const StatsCards = ({waterLogs = {}}) => {
+
+  const stats = getStats(waterLogs);
+
+
+  // const loadStats = async () => {
+  //   const waterLogs = await getItem(KEYS.WATER_LOGS);
+
+  //   const calculatedStats = getStats(waterLogs || {});
+
+  //   setStats(calculatedStats);
+  // };
+
+  const statsData = [
+    {
+      value: stats.daysHit,
+      label: "Days Hit",
+    },
+    {
+      value: stats.missed,
+      label: "Missed",
+    },
+    {
+      value: `${stats.successRate}%`,
+      label: "Success Rate",
+    },
+  ];
+
   return (
     <View style={styles.container}>
-      {stats.map((item, index) => (
+      {statsData.map((item, index) => (
         <LinearGradient
           key={index}
           colors={["#123B78", "#0A2A57"]}
