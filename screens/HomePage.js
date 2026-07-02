@@ -71,6 +71,7 @@ const HomePage = ({ navigation }) => {
           hour: "2-digit",
           minute: "2-digit",
         }),
+        date: today,
         type: "Water",
       };
 
@@ -97,10 +98,15 @@ const HomePage = ({ navigation }) => {
 
   const loadLogs = async () => {
     try {
+      const today = getDateString();
       const savedLogs = await getItem(KEYS.WATER_LOG_ENTRIES);
+
       if (savedLogs !== null) {
-        setLogs(savedLogs);
-        console.log("Loaded Logs:", savedLogs);
+        const todaysLogs = savedLogs.filter((log) => log.date === today);
+        setLogs(todaysLogs);
+        console.log("Loaded Logs:", todaysLogs);
+      } else {
+        setLogs([]);
       }
     } catch (error) {
       console.log(error);

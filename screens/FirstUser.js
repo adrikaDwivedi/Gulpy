@@ -37,8 +37,10 @@ const FirstUser = ({ navigation }) => {
 
       await saveItem(KEYS.DAILY_GOAL, goal);
       await saveItem(KEYS.CURRENT_INTAKE, 0);
+      await saveItem(KEYS.WATER_LOG_ENTRIES, []);
       await saveItem(KEYS.LAST_GOAL_DATE, today);
       await saveItem(KEYS.HAS_ONBOARDED, true);
+      await saveItem(KEYS.LAST_OPEN_DATE, today);
 
       const granted = await requestNotificationPermission();
 
