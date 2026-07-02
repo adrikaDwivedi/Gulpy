@@ -23,16 +23,22 @@ import { FontSize, FontFamily } from "../theme/typography";
 import { Spacing } from "../theme/spacing";
 import { Radius } from "../theme/radius";
 import { Shadow } from "../theme/shadow";
+import { getTodayDate } from "../utils/date";
 
 const FirstUser = ({ navigation }) => {
   const [goal, setGoal] = useState(2000);
+  const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
   const newDate = new Date();
   const hours = newDate.getHours();
 
   const handleStart = async () => {
     try {
+      const today = getTodayDate();
+
       await saveItem(KEYS.DAILY_GOAL, goal);
       await saveItem(KEYS.CURRENT_INTAKE, 0);
+      await saveItem(KEYS.LAST_GOAL_DATE, today);
+      await saveItem(KEYS.HAS_ONBOARDED, true);
 
       const granted = await requestNotificationPermission();
 
@@ -40,7 +46,10 @@ const FirstUser = ({ navigation }) => {
         await sendTestNotification();
       }
       console.log("Goal Saved: ", goal);
-      navigation.navigate("HomePage");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "HomePage" }],
+      });
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +57,10 @@ const FirstUser = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        scrollEnabled={outerScrollEnabled}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <View style={styles.pageContent}>
           <View style={styles.headerContainer}>
             <TouchableOpacity
@@ -69,7 +81,11 @@ const FirstUser = ({ navigation }) => {
             </Text>
           </View>
 
-          <PresetCard goal={goal} setGoal={setGoal} />
+          <PresetCard
+            goal={goal}
+            setGoal={setGoal}
+            setOuterScrollEnabled={setOuterScrollEnabled}
+          />
 
           <Reminder />
 

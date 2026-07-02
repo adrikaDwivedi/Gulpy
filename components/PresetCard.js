@@ -17,10 +17,7 @@ import Svg, {
   Rect,
   Line,
 } from "react-native-svg";
-import {
-  saveItem,
-  KEYS,  
-} from '../storage/hydrationStorage'
+import { saveItem, KEYS } from "../storage/hydrationStorage";
 
 const ITEM_HEIGHT = 52;
 const BW = 116;
@@ -65,23 +62,45 @@ const buildBottlePath = () => {
 };
 const BOTTLE_PATH = buildBottlePath();
 
-const PresetCard = ({
-  goal,
-  setGoal
-}) => {
+const PresetCard = ({ goal, setGoal, setOuterScrollEnabled }) => {
   const scrollRef = useRef(null);
   const fadeAnim = useRef(new Animated.Value(1)).current;
+  const [selectedValue, setSelectedValue] = useState(goal ?? 2000);
+
+  const clampIndex = (index) =>
+    Math.max(0, Math.min(index, amounts.length - 1));
 
   const scrollToValue = (value, animated = true) => {
-    const index = amounts.indexOf(value);
+    const nextValue = Number(value);
+    const index = amounts.indexOf(nextValue);
     if (index !== -1 && scrollRef.current) {
       scrollRef.current.scrollTo({ y: index * ITEM_HEIGHT, animated });
     }
   };
 
+  const commitGoal = (value) => {
+    const nextValue = Number(value);
+    setSelectedValue(nextValue);
+    setGoal(nextValue);
+  };
+
+  const updateSelectionFromOffset = (offsetY) => {
+    const index = clampIndex(Math.round(offsetY / ITEM_HEIGHT));
+    const snapped = amounts[index];
+
+    if (snapped !== selectedValue) {
+      setSelectedValue(snapped);
+    }
+  };
+
   useEffect(() => {
-    setTimeout(() => scrollToValue(goal, false), 120);
-  }, []);
+    setSelectedValue(goal ?? 2000);
+  }, [goal]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => scrollToValue(selectedValue, false), 120);
+    return () => clearTimeout(timer);
+  }, [selectedValue]);
 
   const flash = () => {
     Animated.sequence([
@@ -100,29 +119,37 @@ const PresetCard = ({
 
   const handlePreset = (value) => {
     flash();
-    setGoal(value);
-    scrollToValue(value);
+    commitGoal(value);
+    scrollToValue(value, true);
   };
 
   const handleScroll = (e) => {
-    const index = Math.round(e.nativeEvent.contentOffset.y / ITEM_HEIGHT);
-    const snapped = amounts[Math.max(0, Math.min(index, amounts.length - 1))];
-    if (snapped !== goal) {
-      flash();
-      setGoal(snapped);
-    }
+    updateSelectionFromOffset(e.nativeEvent.contentOffset.y);
   };
 
+  const handleScrollEnd = (e) => {
+    const offsetY = e.nativeEvent.contentOffset.y;
+    const index = clampIndex(Math.round(offsetY / ITEM_HEIGHT));
+    const snapped = amounts[index];
 
+    if (snapped !== selectedValue) {
+      setSelectedValue(snapped);
+    }
 
-  const activeMeta = PRESET_META.find((p) => p.value === goal);
-  const fillPct = ((goal - 1000) / 7000) * 100;
+    commitGoal(snapped);
+    scrollToValue(snapped, true);
+  };
 
-  const waterFillRatio = Math.max(0, Math.min(1, (goal - 1000) / 7000));
+  const activeMeta = PRESET_META.find((p) => p.value === selectedValue);
+  const fillPct = ((selectedValue - 1000) / 7000) * 100;
+
+  const waterFillRatio = Math.max(
+    0,
+    Math.min(1, (selectedValue - 1000) / 7000),
+  );
   const maxWaterY = NECK_H + BODY_H;
   const minWaterY = NECK_H + 10;
   const waterTop = maxWaterY - (maxWaterY - minWaterY) * waterFillRatio;
-
 
   return (
     <>
@@ -200,17 +227,24 @@ const PresetCard = ({
                   ref={scrollRef}
                   style={{ flex: 1 }}
                   contentContainerStyle={{
-                    paddingVertical: (BODY_H - ITEM_HEIGHT) / 2,
+                    paddingTop: (BODY_H - ITEM_HEIGHT) / 2,
+                    paddingBottom: (BODY_H - ITEM_HEIGHT) / 2,
                   }}
+                  nestedScrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   snapToInterval={ITEM_HEIGHT}
+                  snapToAlignment="center"
                   decelerationRate="fast"
-                  onMomentumScrollEnd={handleScroll}
-                  onScrollEndDrag={handleScroll}
+                  onScroll={handleScroll}
+                  onMomentumScrollEnd={handleScrollEnd}
+                  onScrollEndDrag={handleScrollEnd}
+                  onTouchStart={() => setOuterScrollEnabled(false)}
+                  onTouchEnd={() => setOuterScrollEnabled(true)}
+                  onTouchCancel={() => setOuterScrollEnabled(true)}
                   scrollEventThrottle={16}
                 >
                   {amounts.map((val) => {
-                    const isActive = val === goal;
+                    const isActive = val === selectedValue;
                     return (
                       <View
                         key={val}
@@ -269,7 +303,9 @@ const PresetCard = ({
           {/* RIGHT: readout */}
           <View style={styles.rightSection}>
             <Animated.View style={{ opacity: fadeAnim, alignItems: "center" }}>
-              <Text style={styles.goalValue}>{(goal / 1000).toFixed(1)}</Text>
+              <Text style={styles.goalValue}>
+                {(selectedValue / 1000).toFixed(1)}
+              </Text>
               <Text style={styles.goalUnit}>litres / day</Text>
             </Animated.View>
 
@@ -285,11 +321,15 @@ const PresetCard = ({
 
             <View style={styles.statsRow}>
               <View style={styles.statChip}>
-                <Text style={styles.statNum}>{Math.round(goal / 250)}</Text>
+                <Text style={styles.statNum}>
+                  {Math.round(selectedValue / 250)}
+                </Text>
                 <Text style={styles.statLabel}>glasses</Text>
               </View>
               <View style={styles.statChip}>
-                <Text style={styles.statNum}>{Math.round(goal / 500)}</Text>
+                <Text style={styles.statNum}>
+                  {Math.round(selectedValue / 500)}
+                </Text>
                 <Text style={styles.statLabel}>bottles</Text>
               </View>
             </View>
@@ -358,7 +398,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "700",
     flex: 1,
-    fontFamily:'DMSans-Regular',
+    fontFamily: "DMSans-Regular",
   },
   tagBadge: {
     backgroundColor: "rgba(33,200,255,0.12)",
@@ -418,7 +458,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     letterSpacing: -2,
     lineHeight: 66,
-    fontFamily: 'SpaceGrotesk-Bold',
+    fontFamily: "SpaceGrotesk-Bold",
   },
   goalUnit: {
     fontSize: 13,
@@ -426,7 +466,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.4,
     marginTop: 2,
-    fontFamily: 'DMSans-Regular',
+    fontFamily: "DMSans-Regular",
   },
   fillBarWrapper: { width: "100%", paddingHorizontal: 2 },
   fillBarLabel: {
@@ -434,7 +474,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 5,
   },
-  fillBarText: { color: "#4A7AB5", fontSize: 11, fontWeight: "600", fontFamily: 'DMSans-Regular'},
+  fillBarText: {
+    color: "#4A7AB5",
+    fontSize: 11,
+    fontWeight: "600",
+    fontFamily: "DMSans-Regular",
+  },
   fillBarPct: { color: "#21C8FF", fontSize: 11, fontWeight: "700" },
   fillBarTrack: {
     height: 4,
@@ -466,7 +511,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.4,
     marginTop: 1,
-    fontFamily: 'DMSans-Regular',
+    fontFamily: "DMSans-Regular",
   },
   scrollFadeTop: {
     position: "absolute",
@@ -526,5 +571,4 @@ const styles = StyleSheet.create({
   // reminderSection:{
   //   marginTop:20,
   // },
-  
 });

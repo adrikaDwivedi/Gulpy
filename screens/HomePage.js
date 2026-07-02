@@ -7,9 +7,10 @@ import {
   FlatList,
   ScrollView,
   Image,
+  AppState,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoalCard from "../components//GoalCard";
 import QuickAddSection from "../components//QuickAddSection";
@@ -32,7 +33,7 @@ const HomePage = ({ navigation }) => {
   const [dailyGoal, setDailyGoal] = useState(0);
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [customAmount, setCustomAmount] = useState("");
-  const [currentStreak , setCurrentStreak] = useState(0);
+  const [currentStreak, setCurrentStreak] = useState(0);
 
   const progress = dailyGoal
     ? Math.min((waterConsumed / dailyGoal) * 100, 100)
@@ -48,8 +49,7 @@ const HomePage = ({ navigation }) => {
 
       await saveItem(KEYS.CURRENT_INTAKE, updatedWater);
 
-
-     const today = getDateString();
+      const today = getDateString();
 
       const waterLogs = (await getItem(KEYS.WATER_LOGS)) || {};
 
@@ -60,7 +60,7 @@ const HomePage = ({ navigation }) => {
 
       await saveItem(KEYS.WATER_LOGS, waterLogs);
 
-            //// streak 
+      //// streak
       const streak = calculateCurrentStreak(waterLogs);
       setCurrentStreak(streak);
 
@@ -98,7 +98,7 @@ const HomePage = ({ navigation }) => {
   const loadLogs = async () => {
     try {
       const savedLogs = await getItem(KEYS.WATER_LOG_ENTRIES);
-      if (savedLogs) {
+      if (savedLogs !== null) {
         setLogs(savedLogs);
         console.log("Loaded Logs:", savedLogs);
       }
@@ -145,42 +145,68 @@ const HomePage = ({ navigation }) => {
   };
 
   const loadCurrentStreak = async () => {
-  try {
-    const waterLogs = await getItem(KEYS.WATER_LOGS);
+    try {
+      const waterLogs = await getItem(KEYS.WATER_LOGS);
 
-    const streak = calculateCurrentStreak(waterLogs);
+      const streak = calculateCurrentStreak(waterLogs);
 
-    setCurrentStreak(streak);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const checkDailyReset = async () =>{
-  try {
-    const today = getDateString();
-    const lastOpenDate = await getItem(KEYS.LAST_OPEN_DATE);
-
-    if(today !== lastOpenDate){
-      await saveItem(KEYS.CURRENT_INTAKE , 0);
-      setWaterConsumed(0);
-      await saveItem(KEYS.LAST_OPEN_DATE, today)
+      setCurrentStreak(streak);
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-}
+  };
+
+  const checkDailyReset = async () => {
+    try {
+      const today = getDateString();
+      const lastOpenDate = await getItem(KEYS.LAST_OPEN_DATE);
+
+      if (today !== lastOpenDate) {
+        await saveItem(KEYS.CURRENT_INTAKE, 0);
+        await saveItem(KEYS.WATER_LOG_ENTRIES, []);
+        setWaterConsumed(0);
+        setLogs([]);
+        await saveItem(KEYS.LAST_OPEN_DATE, today);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const appState = useRef(AppState.currentState);
 
   useEffect(() => {
-   const initializeApp = async() =>{ 
-    await checkDailyReset();
+    const initializeApp = async () => {
+      await checkDailyReset();
 
-    await loadGoal();
-    await loadCurrentIntake();
-    await loadLogs();
-    await loadCurrentStreak();
-   }
-   initializeApp();
+      await loadGoal();
+      await loadCurrentIntake();
+      await loadLogs();
+      await loadCurrentStreak();
+    };
+    initializeApp();
+
+    const handleAppStateChange = async (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        await checkDailyReset();
+        await loadCurrentIntake();
+        await loadLogs();
+        await loadCurrentStreak();
+      }
+      appState.current = nextAppState;
+    };
+
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange,
+    );
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   return (
@@ -195,10 +221,10 @@ const checkDailyReset = async () =>{
           </View>
           <View style={styles.streaksSection}>
             <TouchableOpacity onPress={() => navigation.navigate("Streaks")}>
-                  <Image 
-                  source={require("../assets/flame-icon.png")}
-                  style={styles.icon}
-                  />
+              <Image
+                source={require("../assets/flame-icon.png")}
+                style={styles.icon}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -312,19 +338,19 @@ const styles = StyleSheet.create({
     marginRight: Spacing.md,
     lineHeight: rf(30),
   },
-    icon: {
+  icon: {
     width: 50,
-    height:50,
+    height: 50,
     shadowColor: "#f5690c",
-  shadowOffset: {
-    width: 1,
-    height: 2,
-  },
-  shadowOpacity: 1,
-  shadowRadius: 3,
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3,
 
-  // Android Shadow
-  elevation: 3,
+    // Android Shadow
+    elevation: 3,
   },
   txtInput: {
     flex: 1,

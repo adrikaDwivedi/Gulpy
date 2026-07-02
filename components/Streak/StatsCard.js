@@ -19,7 +19,7 @@ const StatsCards = ({waterLogs = {}}) => {
 
   //   setStats(calculatedStats);
   // };
-
+              
   const statsData = [
     {
       value: stats.daysHit,

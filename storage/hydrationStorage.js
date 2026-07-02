@@ -6,6 +6,8 @@ export const KEYS = {
   WATER_LOGS: "water_logs",
   WATER_LOG_ENTRIES: "water_log_entries",
   LAST_OPEN_DATE: "last_open_date",
+  LAST_GOAL_DATE: "lastGoalDate",
+  HAS_ONBOARDED: "hasOnboarded",
 };
 
 export const saveItem = async (key, value) => {

@@ -17,18 +17,45 @@ import { getItem, KEYS } from "../storage/hydrationStorage";
 import { wp, rf } from "../utils/responsive";
 import { FontSize, FontFamily } from "../theme/typography";
 import { Spacing } from "../theme/spacing";
+import { getTodayDate } from "../utils/date";
 
 const SplashScreen = ({ navigation }) => {
   useEffect(() => {
     const checkUserSetup = async () => {
       try {
-        const dailyGoal = await getItem(KEYS.DAILY_GOAL);
-        if (dailyGoal) {
+        const hasOnboarded = await getItem(KEYS.HAS_ONBOARDED);
+        const lastGoalDate = await getItem(KEYS.LAST_GOAL_DATE);
+
+        const today = getTodayDate();
+
+        if (!hasOnboarded) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "FirstUser" }],
+          });
+          return;
+        }
+
+        if (lastGoalDate === today) {
           navigation.reset({
             index: 0,
             routes: [{ name: "HomePage" }],
           });
+          return;
         }
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "FirstUser" }],
+        });
+
+        // const dailyGoal = await getItem(KEYS.DAILY_GOAL);
+        // if (dailyGoal) {
+        //   navigation.reset({
+        //     index: 0,
+        //     routes: [{ name: "HomePage" }],
+        //   });
+        // }
       } catch (error) {
         console.log(error);
       }
