@@ -106,22 +106,33 @@ const StreakCalendar = () => {
 
   const loadCalendar = async () => {
     const waterLogs = (await getItem(KEYS.WATER_LOGS)) || {};
+    const todayGoal = await getItem(KEYS.DAILY_GOAL);
 
     const calendar = {};
 
     Object.entries(waterLogs).forEach(([date, day]) => {
-      const completed = day.intake >= day.goal;
+      const goalValue = day.goal ?? todayGoal ?? 0;
+      const completed = day.intake >= goalValue;
 
       if (date === today) {
         if (completed) {
           calendar[date] = "completed";
         }
-        // If today's goal isn't reached yet,
-        // leave it undefined so your "Today" UI is shown.
-      } else {
+        return;
+      }
+
+      if (date < today) {
         calendar[date] = completed ? "completed" : "missed";
       }
     });
+
+    const todayLog = waterLogs[today];
+    if (todayLog) {
+      const todayGoalValue = todayLog.goal ?? todayGoal ?? 0;
+      if (todayLog.intake >= todayGoalValue) {
+        calendar[today] = "completed";
+      }
+    }
 
     setStreakData(calendar);
   };

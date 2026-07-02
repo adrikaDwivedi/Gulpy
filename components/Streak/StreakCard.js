@@ -8,7 +8,7 @@ import { Spacing } from "../../theme/spacing";
 import { Radius } from "../../theme/radius";
 import { Shadow } from "../../theme/shadow";
 
-const StreakCard = () => {
+const StreakCard = ({ currentStreak = 0 }) => {
   return (
     <LinearGradient
       colors={["#10295A", "#112d65"]}
@@ -16,20 +16,16 @@ const StreakCard = () => {
       end={{ x: 1, y: 1 }}
       style={styles.container}
     >
-      
-        {/* <Ionicons name="flame-outline" size={52} color="#FFF" /> */}
-      <Image 
-      source={require("../../assets/flame-icon.png")}
-      style={styles.icon}
+      <Image
+        source={require("../../assets/flame-icon.png")}
+        style={styles.icon}
       />
-
-      
 
       <View style={styles.content}>
         <Text style={styles.label}>Current streak</Text>
 
         <View style={styles.daysRow}>
-          <Text style={styles.number}>10</Text>
+          <Text style={styles.number}>{currentStreak}</Text>
           <Text style={styles.days}>days</Text>
         </View>
 
@@ -56,17 +52,17 @@ const styles = StyleSheet.create({
   },
   icon: {
     width: 50,
-    height:50,
+    height: 50,
     shadowColor: "#f5690c",
-  shadowOffset: {
-    width: 1,
-    height: 2,
-  },
-  shadowOpacity: 1,
-  shadowRadius: 3,
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3,
 
-  // Android Shadow
-  elevation: 3,
+    // Android Shadow
+    elevation: 3,
   },
   content: {
     marginLeft: Spacing.lg,

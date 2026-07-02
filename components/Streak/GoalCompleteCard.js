@@ -7,7 +7,11 @@ import { Spacing } from "../../theme/spacing";
 import { Radius } from "../../theme/radius";
 import { rf } from "../../utils/responsive";
 
-const GoalCompletedCard = () => {
+const GoalCompletedCard = ({ dailyGoal, todayIntake, completed }) => {
+  if (!completed) {
+    return null;
+  }
+
   return (
     <LinearGradient
       colors={["#10295A", "#112d65"]}
@@ -22,7 +26,7 @@ const GoalCompletedCard = () => {
       <View style={styles.textContainer}>
         <Text style={styles.title}>Today's Goal Complete!</Text>
 
-        <Text style={styles.subtitle}>2500 ml reached today</Text>
+        <Text style={styles.subtitle}>{`${dailyGoal} ml reached today`}</Text>
 
         <Text style={styles.caption}>Keep the streak alive 💧</Text>
       </View>
