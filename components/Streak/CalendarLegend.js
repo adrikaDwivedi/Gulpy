@@ -27,6 +27,7 @@ const CalendarLegend = () => {
         borderColor="#FF5B5B"
         label="Missed"
       />
+      
 
       <LegendItem
         color="#173C73"

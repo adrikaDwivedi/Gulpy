@@ -6,8 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { useState } from "react";
 import CalendarLegend from "./CalendarLegend";
-import { getItem, KEYS } from "../../storage/hydrationStorage";
-import { getDateString } from "../../utils/streakUtils";
+import { getItem, KEYS , isPlainObject} from "../../storage/hydrationStorage";
+import {getDateString, isCompletedDay} from "../../utils/streakUtils";
 import { wp, rf } from "../../utils/responsive";
 import { FontSize, FontFamily } from "../../theme/typography";
 import { Spacing } from "../../theme/spacing";
@@ -104,38 +104,37 @@ const StreakCalendar = () => {
   // "2026-06-15": "missed",
   //   }
 
-  const loadCalendar = async () => {
-    const waterLogs = (await getItem(KEYS.WATER_LOGS)) || {};
-    const todayGoal = await getItem(KEYS.DAILY_GOAL);
+const loadCalendar = async () => {
+    const rawWaterLogs = await getItem(KEYS.WATER_LOGS);
 
-    const calendar = {};
+    const waterLogs = isPlainObject(rawWaterLogs) ? rawWaterLogs : {};
 
-    Object.entries(waterLogs).forEach(([date, day]) => {
-      const goalValue = day.goal ?? todayGoal ?? 0;
-      const completed = day.intake >= goalValue;
+  const todayGoal = await getItem(KEYS.DAILY_GOAL);
 
-      if (date === today) {
-        if (completed) {
-          calendar[date] = "completed";
-        }
-        return;
+  console.log("RAW WATER_LOGS:", JSON.stringify(waterLogs));
+   console.log("TODAY KEY:", today);
+   console.log("TODAY ENTRY:", JSON.stringify(waterLogs[today]));
+
+  const calendar = {};
+
+  Object.entries(waterLogs).forEach(([date, day]) => {
+    const log = { ...day, goal: day.goal ?? todayGoal };
+    const completed = isCompletedDay(log);
+
+    if (date === today) {
+      if (completed) {
+        calendar[date] = "completed";
       }
-
-      if (date < today) {
-        calendar[date] = completed ? "completed" : "missed";
-      }
-    });
-
-    const todayLog = waterLogs[today];
-    if (todayLog) {
-      const todayGoalValue = todayLog.goal ?? todayGoal ?? 0;
-      if (todayLog.intake >= todayGoalValue) {
-        calendar[today] = "completed";
-      }
+      return;
     }
 
-    setStreakData(calendar);
-  };
+    if (date < today) {
+      calendar[date] = completed ? "completed" : "missed";
+    }
+  });
+
+  setStreakData(calendar);
+};
 
   useFocusEffect(
     useCallback(() => {

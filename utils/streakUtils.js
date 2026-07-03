@@ -1,11 +1,17 @@
 export const getDateString = (date = new Date()) => {
-  return date.toISOString().split("T")[0];
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 };
+
 
 export const isCompletedDay = (log) => {
   if (!log) return false;
-
-  return Number(log.intake) >= Number(log.goal);
+  const goal = Number(log.goal);
+  const intake = Number(log.intake);
+  if (!goal || goal <= 0) return false;
+  return intake >= goal;
 };
 
 export const calculateCurrentStreak = (waterLogs) => {
@@ -14,17 +20,19 @@ export const calculateCurrentStreak = (waterLogs) => {
   let streak = 0;
   let currentDate = new Date();
 
+  const todayStr = getDateString(currentDate);
+  if (!isCompletedDay(waterLogs[todayStr])) {
+    // today isn't finished yet — don't count it, don't kill the streak either
+    currentDate.setDate(currentDate.getDate() - 1);
+  }
+
   while (true) {
     const date = getDateString(currentDate);
-
     const log = waterLogs[date];
 
-    if (!isCompletedDay(log)) {
-      break;
-    }
+    if (!isCompletedDay(log)) break;
 
     streak++;
-
     currentDate.setDate(currentDate.getDate() - 1);
   }
 

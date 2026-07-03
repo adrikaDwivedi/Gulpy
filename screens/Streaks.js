@@ -7,7 +7,7 @@ import StatsCard from "../components/Streak/StatsCard";
 import GoalCompleteCard from "../components/Streak/GoalCompleteCard";
 import { useEffect, useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { getItem, KEYS } from "../storage/hydrationStorage";
+import { getItem, KEYS , isPlainObject} from "../storage/hydrationStorage";
 import {
   calculateCurrentStreak,
   calculateLongestStreak,
@@ -29,7 +29,8 @@ const Streaks = () => {
   );
 
   const loadLogs = async () => {
-    const logs = (await getItem(KEYS.WATER_LOGS)) || {};
+    const rawLogs = await getItem(KEYS.WATER_LOGS);
+const logs = isPlainObject(rawLogs) ? rawLogs : {};
     const savedGoal = await getItem(KEYS.DAILY_GOAL);
     const savedIntake = await getItem(KEYS.CURRENT_INTAKE);
     const today = getDateString();

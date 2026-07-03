@@ -36,3 +36,10 @@ export const removeItem = async (key) => {
     console.log("Remove Error: ", error);
   }
 };
+export const isPlainObject = (value) => {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value)
+  );
+};

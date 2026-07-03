@@ -15,7 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import GoalCard from "../components//GoalCard";
 import QuickAddSection from "../components//QuickAddSection";
 import CustomLogs from "../components/CustomLogs";
-import { saveItem, getItem, KEYS } from "../storage//hydrationStorage.js";
+import { saveItem, getItem, KEYS, isPlainObject} from "../storage//hydrationStorage.js";
 import { wp, hp, rf } from "../utils/responsive";
 import { FontSize, FontFamily } from "../theme/typography";
 import { Spacing } from "../theme/spacing";
@@ -51,7 +51,8 @@ const HomePage = ({ navigation }) => {
 
       const today = getDateString();
 
-      const waterLogs = (await getItem(KEYS.WATER_LOGS)) || {};
+      const rawWaterLogs = await getItem(KEYS.WATER_LOGS);
+      const waterLogs = isPlainObject(rawWaterLogs) ? rawWaterLogs : {};
 
       waterLogs[today] = {
         goal: dailyGoal,
@@ -150,17 +151,16 @@ const HomePage = ({ navigation }) => {
     }
   };
 
-  const loadCurrentStreak = async () => {
-    try {
-      const waterLogs = await getItem(KEYS.WATER_LOGS);
-
-      const streak = calculateCurrentStreak(waterLogs);
-
-      setCurrentStreak(streak);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const loadCurrentStreak = async () => {
+  try {
+    const rawWaterLogs = await getItem(KEYS.WATER_LOGS);
+    const waterLogs = isPlainObject(rawWaterLogs) ? rawWaterLogs : {};
+    const streak = calculateCurrentStreak(waterLogs);
+    setCurrentStreak(streak);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const checkDailyReset = async () => {
     try {
