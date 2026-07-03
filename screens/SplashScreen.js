@@ -1,15 +1,7 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect } from "react";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  Easing,
-  runOnJS,
-} from "react-native-reanimated";
+import { useEffect, useState } from "react";
 import WaterBottle from "../components/WaterBottle";
-import AnimatedDrop from "../components/AnimatedDrop";
 import ProgressPill from "../components/ProgressPill";
 import Tagline from "../components/Tagline";
 import ButtonComponent from "../components/ButtonComponent";
@@ -20,49 +12,41 @@ import { Spacing } from "../theme/spacing";
 import { getTodayDate } from "../utils/date";
 
 const SplashScreen = ({ navigation }) => {
+  const [nextRoute, setNextRoute] = useState(null);
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
     const checkUserSetup = async () => {
       try {
         const hasOnboarded = await getItem(KEYS.HAS_ONBOARDED);
         const lastGoalDate = await getItem(KEYS.LAST_GOAL_DATE);
-
         const today = getTodayDate();
 
         if (!hasOnboarded) {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "FirstUser" }],
-          });
-          return;
+          setNextRoute("FirstUser");
+        } else if (lastGoalDate === today) {
+          setNextRoute("HomePage");
+        } else {
+          setNextRoute("FirstUser");
         }
-
-        if (lastGoalDate === today) {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "HomePage" }],
-          });
-          return;
-        }
-
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "FirstUser" }],
-        });
-
-        // const dailyGoal = await getItem(KEYS.DAILY_GOAL);
-        // if (dailyGoal) {
-        //   navigation.reset({
-        //     index: 0,
-        //     routes: [{ name: "HomePage" }],
-        //   });
-        // }
       } catch (error) {
         console.log(error);
+        setNextRoute("FirstUser");
+      } finally {
+        setIsReady(true);
       }
     };
 
     checkUserSetup();
   }, []);
+
+  const handlePress = () => {
+    if (!isReady || !nextRoute) return;
+    navigation.reset({
+      index: 0,
+      routes: [{ name: nextRoute }],
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,16 +58,17 @@ const SplashScreen = ({ navigation }) => {
         <Text style={styles.paragraphs}>
           Your daily reminder to stay hydrated!
         </Text>
-        {/* <View>
-        <AnimatedDrop/>
-      </View> */}
       </View>
       <View>
         <WaterBottle />
       </View>
       <ProgressPill />
       <Tagline />
-      <ButtonComponent onPress={() => navigation.navigate("FirstUser")} />
+      <ButtonComponent
+        onPress={handlePress}
+        label={isReady ? "Continue" : "Loading..."}
+        animated={isReady}
+      />
     </SafeAreaView>
   );
 };
