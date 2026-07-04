@@ -28,6 +28,7 @@ const FirstUser = ({ navigation }) => {
   const [goal, setGoal] = useState(2000);
   const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
   const [reminderTimes, setReminderTimes] = useState([]); // [{ hour, minute }, ...]
+  const [remindersEnabled, setRemindersEnabled] = useState(false);
   const newDate = new Date();
   const hours = newDate.getHours();
 
@@ -44,7 +45,7 @@ const FirstUser = ({ navigation }) => {
 
       const granted = await requestNotificationPermission();
 
-      if (granted && reminderTimes.length > 0) {
+      if (granted && remindersEnabled && reminderTimes.length > 0) {
         await saveItem(KEYS.REMINDER_TIMES, reminderTimes);
         await scheduleRemindersForToday(reminderTimes);
       }
@@ -67,14 +68,14 @@ const FirstUser = ({ navigation }) => {
       >
         <View style={styles.pageContent}>
           <View style={styles.headerContainer}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.backBtn}
               onPress={() => {
                 navigation.goBack();
               }}
             >
               <Ionicons name="arrow-back" size={rf(22)} color="#4dc1f7" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Text style={styles.headerText}>Set your daily goal</Text>
           </View>
 
@@ -91,7 +92,11 @@ const FirstUser = ({ navigation }) => {
             setOuterScrollEnabled={setOuterScrollEnabled}
           />
 
-          <Reminder onTimesChange={setReminderTimes} />
+          <Reminder
+            remindersEnabled={remindersEnabled}
+            onEnabledChange={setRemindersEnabled}
+            onTimesChange={setReminderTimes}
+          />
 
           <View style={styles.buttonWrapper}>
             <ButtonComponent
@@ -111,9 +116,6 @@ export default FirstUser;
 
 // styles unchanged
 
-
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -127,17 +129,18 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.xs,
+    marginTop: Spacing.xxl,
   },
   headerText: {
     color: "#fff",
-    fontSize: FontSize.xxl,
+    fontSize: FontSize.xl,
     fontFamily: FontFamily.bold,
     flex: 1,
     flexWrap: "wrap",
   },
   subtitleWrapper: {
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.xs,
   },
   subtitleText: {
     fontSize: FontSize.sm,
@@ -157,6 +160,6 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     alignItems: "center",
-    marginTop: Spacing.xl,
+    marginTop: Spacing.xs,
   },
 });

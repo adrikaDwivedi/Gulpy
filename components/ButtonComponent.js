@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#00cfff",
     paddingHorizontal: Spacing.lg,
     borderRadius: Radius.full,
-    marginTop: Spacing.lg,
+    marginTop: Spacing.xs,
     justifyContent: "center",
     alignItems: "center",
   },

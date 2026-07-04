@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     padding: 18,
     flexDirection: "row",
     marginTop: 25,
-    width: 390,
+    width: 420,
     alignSelf: "center",
   },
   left: {

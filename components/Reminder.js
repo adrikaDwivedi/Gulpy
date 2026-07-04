@@ -1,7 +1,28 @@
 import { StyleSheet, Text, View, Switch, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const Reminder = () => {
+const parseTimeString = (timeString) => {
+  const match = timeString.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+
+  let hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const period = match[3].toUpperCase();
+
+  if (hour === 12) {
+    hour = period === "AM" ? 0 : 12;
+  } else if (period === "PM") {
+    hour += 12;
+  }
+
+  return { hour, minute };
+};
+
+const Reminder = ({
+  remindersEnabled = false,
+  onEnabledChange = () => {},
+  onTimesChange = () => {},
+}) => {
   const reminderTimes = [
     "7:00 AM",
     "10:00 AM",
@@ -17,16 +38,30 @@ const Reminder = () => {
     "4:00 PM",
     "9:00 PM",
   ]);
+  const [enabled, setEnabled] = useState(remindersEnabled);
+
+  useEffect(() => {
+    setEnabled(remindersEnabled);
+  }, [remindersEnabled]);
+
+  useEffect(() => {
+    onEnabledChange(enabled);
+    if (enabled) {
+      const parsed = selectedTimes.map(parseTimeString).filter(Boolean);
+      onTimesChange(parsed);
+    } else {
+      onTimesChange([]);
+    }
+  }, [enabled, selectedTimes, onEnabledChange, onTimesChange]);
 
   const toggleReminder = (time) => {
-    if (selectedTimes.includes(time)) {
-      setSelectedTimes(selectedTimes.filter((t) => t !== time));
-    } else {
-      setSelectedTimes([...selectedTimes, time]);
-    }
+    const newTimes = selectedTimes.includes(time)
+      ? selectedTimes.filter((t) => t !== time)
+      : [...selectedTimes, time];
+
+    setSelectedTimes(newTimes);
   };
 
-  const [remindersEnabled, setRemindersEnabled] = useState(false);
   return (
     <View>
       <View style={styles.reminderSection}>
@@ -39,8 +74,8 @@ const Reminder = () => {
             </Text>
           </View>
           <Switch
-            value={remindersEnabled}
-            onValueChange={setRemindersEnabled}
+            value={enabled}
+            onValueChange={setEnabled}
             trackColor={{
               false: "#1A3157",
               true: "#2E90FA",
