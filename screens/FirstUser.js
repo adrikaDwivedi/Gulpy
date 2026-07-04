@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import {
   requestNotificationPermission,
-  scheduleDailyReminder,
-  sendTestNotification,
+  scheduleRemindersForToday,
 } from "../services/Notifications";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -28,6 +27,7 @@ import { getTodayDate } from "../utils/date";
 const FirstUser = ({ navigation }) => {
   const [goal, setGoal] = useState(2000);
   const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
+  const [reminderTimes, setReminderTimes] = useState([]); // [{ hour, minute }, ...]
   const newDate = new Date();
   const hours = newDate.getHours();
 
@@ -44,9 +44,11 @@ const FirstUser = ({ navigation }) => {
 
       const granted = await requestNotificationPermission();
 
-      if (granted) {
-        await sendTestNotification();
+      if (granted && reminderTimes.length > 0) {
+        await saveItem(KEYS.REMINDER_TIMES, reminderTimes);
+        await scheduleRemindersForToday(reminderTimes);
       }
+
       console.log("Goal Saved: ", goal);
       navigation.reset({
         index: 0,
@@ -89,7 +91,7 @@ const FirstUser = ({ navigation }) => {
             setOuterScrollEnabled={setOuterScrollEnabled}
           />
 
-          <Reminder />
+          <Reminder onTimesChange={setReminderTimes} />
 
           <View style={styles.buttonWrapper}>
             <ButtonComponent
@@ -106,6 +108,11 @@ const FirstUser = ({ navigation }) => {
 };
 
 export default FirstUser;
+
+// styles unchanged
+
+
+
 
 const styles = StyleSheet.create({
   container: {

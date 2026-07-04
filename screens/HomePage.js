@@ -27,6 +27,12 @@ import {
   calculateLongestStreak,
   getDateString,
 } from "../utils/streakUtils";
+import {
+  requestNotificationPermission,
+  stopRemindersIfGoalReached,
+  restartRemindersForNewDay,
+} from "../services/Notifications";
+
 
 const HomePage = ({ navigation }) => {
   const [logs, setLogs] = useState([]);
@@ -48,6 +54,8 @@ const HomePage = ({ navigation }) => {
       setWaterConsumed(updatedWater);
 
       await saveItem(KEYS.CURRENT_INTAKE, updatedWater);
+      
+      await stopRemindersIfGoalReached(updatedWater, dailyGoal);
 
       const today = getDateString();
 
@@ -184,6 +192,8 @@ const loadCurrentStreak = async () => {
   useEffect(() => {
     const initializeApp = async () => {
       await checkDailyReset();
+      await restartRemindersForNewDay();
+
 
       await loadGoal();
       await loadCurrentIntake();
@@ -198,6 +208,7 @@ const loadCurrentStreak = async () => {
         nextAppState === "active"
       ) {
         await checkDailyReset();
+         await restartRemindersForNewDay();
         await loadCurrentIntake();
         await loadLogs();
         await loadCurrentStreak();
