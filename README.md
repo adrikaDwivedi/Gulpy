@@ -67,7 +67,7 @@ npx expo start --ios      # iOS Simulator
 npx expo start --android  # Android Emulator
 ```
 
-## 🗺️ Roadmap
+## 🗺️ Roadmap (To Be Continued)
 
 - [ ] Apple Health / Google Fit sync
 - [ ] Widgets for quick logging
@@ -78,12 +78,9 @@ npx expo start --android  # Android Emulator
 
 Contributions, issues, and feature requests are welcome. Feel free to check the [issues page](../../issues) if you'd like to help out.
 
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](./LICENSE) file for details.
 
 ---
 
 <div align="center">
-Made with 💙 by <a href="#">Adrika</a>
+Made with passion by <a href="#">Adrika</a>
 </div>
