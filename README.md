@@ -9,7 +9,6 @@ Gulpy is a beautifully simple hydration tracker built with React Native and Expo
 [![Made with Expo](https://img.shields.io/badge/Made%20with-Expo-000020?style=flat&logo=expo&logoColor=white)](https://expo.dev)
 [![React Native](https://img.shields.io/badge/React%20Native-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactnative.dev)
 [![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-blue)](#)
-[![License](https://img.shields.io/badge/license-MIT-lightgrey)](#license)
 
 </div>
 
@@ -36,7 +35,6 @@ Staying hydrated shouldn't need a spreadsheet. Gulpy turns drinking water into a
 <img src="./screenshots/welcome.png" width="200" alt="Welcome screen" />
 <img src="./screenshots/dashboard.png" width="200" alt="Today's hydration dashboard" />
 <img src="./screenshots/streaks.png" width="200" alt="Streaks and calendar" />
-<img src="./screenshots/goal-setup.png" width="200" alt="Daily goal setup" />
 </div>
 
 ## 🛠️ Tech Stack
