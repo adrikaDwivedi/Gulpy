@@ -13,7 +13,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export default function CircularProgress({
   progress = 74,
-  size = 180,
+  size = 170,
   dailyGoal,
   waterConsumed,
 }) {
@@ -108,19 +108,20 @@ const styles = StyleSheet.create({
   },
 
   percent: {
-    fontSize: 42,
+    fontSize: 38,
     color: "#fff",
     fontWeight: "700",
   },
 
   amount: {
     color: "#8FB8FF",
-    fontSize: 22,
+    fontSize: 14,
     marginTop: 5,
   },
 
   goal: {
     color: "#7090C9",
     marginTop: 4,
+    fontSize: 16,
   },
 });
