@@ -15,7 +15,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.aaadrika-dwivedi.Gulpy",
-      "icon": "./assets/FullLogo.png"
+      "icon": "./assets/FullLogo.png",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
