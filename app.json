@@ -15,8 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.aaadrika-dwivedi.Gulpy",
-          "icon": "./assets/FullLogo.png"
-
+      "icon": "./assets/FullLogo.png"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +29,14 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font"
-    ]
+      "expo-font",
+      "expo-notifications"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "cd15e3d6-ea66-438d-94a0-65c0b24a4e53"
+      }
+    },
+    "owner": "awwwdrika"
   }
 }
